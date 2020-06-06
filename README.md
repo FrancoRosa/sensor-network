@@ -1,24 +1,15 @@
-# README
+# Sensor Network
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app enables users interact with sensors and actuators deployed in a remote field
 
-Things you may want to cover:
+# Entity Relationship Diagram 
 
-* Ruby version
+![Entity Relationship diagram](./app/assets/images/erd.png)
 
-* System dependencies
+# Desired features
 
-* Configuration
+* Nice GUI
 
-* Database creation
+* Realtime update
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Geolocation
