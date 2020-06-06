@@ -1,0 +1,2 @@
+class Actuator < ApplicationRecord
+end
