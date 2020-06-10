@@ -15,6 +15,8 @@ class SensorsController < ApplicationController
   # GET /sensors/new
   def new
     @sensor = Sensor.new
+    @device_options = Device.all.map{ |x| [x.name, x.id] }
+    @variable_options = Variable.all.map{ |x| [x.name, x.id] }
   end
 
   # GET /sensors/1/edit
@@ -69,6 +71,6 @@ class SensorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def sensor_params
-      params.require(:sensor).permit(:device, :variable, :value)
+      params.require(:sensor).permit(:device_id, :variable_id, :value)
     end
 end

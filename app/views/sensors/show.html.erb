@@ -2,17 +2,22 @@
 
 <p>
   <strong>Device:</strong>
-  <%= @sensor.device %>
+  <%= @sensor.sensor_device.name %>
 </p>
 
 <p>
   <strong>Variable:</strong>
-  <%= @sensor.variable %>
+  <%= @sensor.sensor_variable.name %>
 </p>
 
 <p>
   <strong>Value:</strong>
   <%= @sensor.value %>
+</p>
+
+<p>
+  <strong>Unit:</strong>
+  <%= @sensor.sensor_variable.unit %>
 </p>
 
 <%= link_to 'Edit', edit_sensor_path(@sensor) %> |
