@@ -1,0 +1,2 @@
+module ActuatorHistoriesHelper
+end

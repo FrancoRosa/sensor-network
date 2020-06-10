@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_084152) do
+ActiveRecord::Schema.define(version: 2020_06_10_085213) do
+
+  create_table "actuator_histories", force: :cascade do |t|
+    t.integer "actuator_id", null: false
+    t.float "expected_status"
+    t.float "current_status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["actuator_id"], name: "index_actuator_histories_on_actuator_id"
+  end
 
   create_table "actuators", force: :cascade do |t|
     t.integer "device_id", null: false
@@ -66,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_084152) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "actuator_histories", "actuators"
   add_foreign_key "actuators", "devices"
   add_foreign_key "actuators", "elements"
   add_foreign_key "sensor_histories", "sensors"

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :actuator_histories
   resources :actuators
   resources :sensor_histories
   resources :sensors

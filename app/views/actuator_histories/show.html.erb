@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Actuator:</strong>
+  <%= @actuator_history.actuator_id %>
+</p>
+
+<p>
+  <strong>Expected status:</strong>
+  <%= @actuator_history.expected_status %>
+</p>
+
+<p>
+  <strong>Current status:</strong>
+  <%= @actuator_history.current_status %>
+</p>
+
+<%= link_to 'Edit', edit_actuator_history_path(@actuator_history) %> |
+<%= link_to 'Back', actuator_histories_path %>
