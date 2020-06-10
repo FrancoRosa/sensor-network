@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   resources :sensor_actuators
   resources :commands
   resources :actuator_histories
