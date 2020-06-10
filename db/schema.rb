@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_065412) do
+ActiveRecord::Schema.define(version: 2020_06_10_065704) do
 
   create_table "devices", force: :cascade do |t|
     t.string "name"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2020_06_10_065412) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "sensors", force: :cascade do |t|
+    t.integer "device_id"
+    t.integer "variable_id"
+    t.float "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["device_id"], name: "index_sensors_on_device_id"
+    t.index ["variable_id"], name: "index_sensors_on_variable_id"
   end
 
   create_table "variables", force: :cascade do |t|
