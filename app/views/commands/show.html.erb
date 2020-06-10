@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @command.name %>
+</p>
+
+<p>
+  <strong>Condition:</strong>
+  <%= @command.condition %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @command.status %>
+</p>
+
+<%= link_to 'Edit', edit_command_path(@command) %> |
+<%= link_to 'Back', commands_path %>

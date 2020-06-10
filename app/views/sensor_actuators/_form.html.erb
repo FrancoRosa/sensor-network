@@ -1,0 +1,42 @@
+<%= form_with(model: sensor_actuator, local: true) do |form| %>
+  <% if sensor_actuator.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sensor_actuator.errors.count, "error") %> prohibited this sensor_actuator from being saved:</h2>
+
+      <ul>
+        <% sensor_actuator.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :sensor_id %>
+    <%= form.collection_select :sensor_id, Sensor.all, :id, :features %>
+  </div>
+
+  <div class="field">
+    <%= form.label :actuator_id %>
+    <%= form.collection_select :actuator_id, Actuator.all, :id, :features %>
+  </div>
+
+  <div class="field">
+    <%= form.label :command_id %>
+    <%= form.collection_select :command_id, Command.all, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :enable %>
+    <%= form.check_box :enable %>
+  </div>
+
+  <div class="field">
+    <%= form.label :threshold %>
+    <%= form.text_field :threshold %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

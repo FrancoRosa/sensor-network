@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sensor:</strong>
+  <%= @sensor_actuator.sensor_id %>
+</p>
+
+<p>
+  <strong>Actuator:</strong>
+  <%= @sensor_actuator.actuator_id %>
+</p>
+
+<p>
+  <strong>Command:</strong>
+  <%= @sensor_actuator.command_id %>
+</p>
+
+<p>
+  <strong>Enable:</strong>
+  <%= @sensor_actuator.enable %>
+</p>
+
+<p>
+  <strong>Threshold:</strong>
+  <%= @sensor_actuator.threshold %>
+</p>
+
+<%= link_to 'Edit', edit_sensor_actuator_path(@sensor_actuator) %> |
+<%= link_to 'Back', sensor_actuators_path %>

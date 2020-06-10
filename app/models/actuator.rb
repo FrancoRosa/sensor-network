@@ -7,6 +7,10 @@ class Actuator < ApplicationRecord
   validates_uniqueness_of :device_id, scope: [:element_id]
   after_update :save_on_history
   
+  def features
+    Actuator.find(id).element.name
+  end
+
   private 
 
   def save_on_history

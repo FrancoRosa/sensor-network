@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_085213) do
+ActiveRecord::Schema.define(version: 2020_06_10_112804) do
 
   create_table "actuator_histories", force: :cascade do |t|
     t.integer "actuator_id", null: false
@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(version: 2020_06_10_085213) do
     t.index ["element_id"], name: "index_actuators_on_element_id"
   end
 
+  create_table "commands", force: :cascade do |t|
+    t.string "name"
+    t.string "condition"
+    t.float "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "devices", force: :cascade do |t|
     t.string "name"
     t.float "latitude"
@@ -48,6 +56,19 @@ ActiveRecord::Schema.define(version: 2020_06_10_085213) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "sensor_actuators", force: :cascade do |t|
+    t.integer "sensor_id", null: false
+    t.integer "actuator_id", null: false
+    t.integer "command_id", null: false
+    t.boolean "enable", default: false
+    t.float "threshold"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["actuator_id"], name: "index_sensor_actuators_on_actuator_id"
+    t.index ["command_id"], name: "index_sensor_actuators_on_command_id"
+    t.index ["sensor_id"], name: "index_sensor_actuators_on_sensor_id"
   end
 
   create_table "sensor_histories", force: :cascade do |t|
@@ -78,5 +99,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_085213) do
   add_foreign_key "actuator_histories", "actuators"
   add_foreign_key "actuators", "devices"
   add_foreign_key "actuators", "elements"
+  add_foreign_key "sensor_actuators", "actuators"
+  add_foreign_key "sensor_actuators", "commands"
+  add_foreign_key "sensor_actuators", "sensors"
   add_foreign_key "sensor_histories", "sensors"
 end
