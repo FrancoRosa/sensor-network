@@ -1,0 +1,37 @@
+<%= form_with(model: actuator, local: true) do |form| %>
+  <% if actuator.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(actuator.errors.count, "error") %> prohibited this actuator from being saved:</h2>
+
+      <ul>
+        <% actuator.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :device_id %>
+    <%= form.collection_select :device_id, Device.all, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :element_id %>
+    <%= form.collection_select :element_id, Element.all, :id, :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :expected_status %>
+    <%= form.text_field :expected_status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :current_status %>
+    <%= form.text_field :current_status %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

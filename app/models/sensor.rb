@@ -4,8 +4,9 @@ class Sensor < ApplicationRecord
   has_many :sensor_histories
   
   validates :device_id, presence: true
-  validates :variable_id, presence: true, uniqueness: true
+  validates :variable_id, presence: true
   validates :value, presence: true
+  validates_uniqueness_of :device_id, scope: [:variable_id]
   after_update :save_on_history
 
   private 

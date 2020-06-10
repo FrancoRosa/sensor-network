@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Device:</strong>
+  <%= @actuator.device_id %>
+</p>
+
+<p>
+  <strong>Element:</strong>
+  <%= @actuator.element_id %>
+</p>
+
+<p>
+  <strong>Expected status:</strong>
+  <%= @actuator.expected_status %>
+</p>
+
+<p>
+  <strong>Current status:</strong>
+  <%= @actuator.current_status %>
+</p>
+
+<%= link_to 'Edit', edit_actuator_path(@actuator) %> |
+<%= link_to 'Back', actuators_path %>
