@@ -4,7 +4,7 @@ This app enables users interact with sensors and actuators deployed in a remote 
 
 # Entity Relationship Diagram 
 
-![Entity Relationship diagram](./app/assets/images/erd.png)
+![Entity Relationship diagram](./docs/erd.png)
 
 # Desired features
 
