@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_065704) do
+ActiveRecord::Schema.define(version: 2020_06_10_074613) do
 
   create_table "devices", force: :cascade do |t|
     t.string "name"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 2020_06_10_065704) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "sensor_histories", force: :cascade do |t|
+    t.integer "sensor_id", null: false
+    t.float "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["sensor_id"], name: "index_sensor_histories_on_sensor_id"
+  end
+
   create_table "sensors", force: :cascade do |t|
     t.integer "device_id"
     t.integer "variable_id"
@@ -47,4 +55,5 @@ ActiveRecord::Schema.define(version: 2020_06_10_065704) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "sensor_histories", "sensors"
 end

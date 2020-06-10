@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :sensor_histories
   resources :sensors
   resources :devices
   resources :variables

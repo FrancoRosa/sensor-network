@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label :device %>
-    <%= form.select :device_id, options_for_select(@device_options) %>
+    <%= form.collection_select :device_id, Device.all, :id, :name %>
   </div>
 
   <div class="field">
     <%= form.label :variable %>
-    <%= form.select :variable_id, options_for_select(@variable_options) %>
+    <%= form.collection_select :variable_id, Variable.all, :id, :name %>
   </div>
 
   <div class="field">

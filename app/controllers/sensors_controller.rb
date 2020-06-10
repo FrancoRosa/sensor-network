@@ -15,8 +15,12 @@ class SensorsController < ApplicationController
   # GET /sensors/new
   def new
     @sensor = Sensor.new
-    @device_options = Device.all.map{ |x| [x.name, x.id] }
-    @variable_options = Variable.all.map{ |x| [x.name, x.id] }
+    @device_options = Device.all.map { |x| [x.name, x.id] }
+    @variable_options = Variable.all.map { |x| [x.name, x.id] }
+    puts ">>>>>>>>>>>>>>>>>>>>>>>>"
+    puts " #{@device_options}"
+    puts " #{@variable_options}"
+    puts ">>>>>>>>>>>>>>>>>>>>>>>>"
   end
 
   # GET /sensors/1/edit

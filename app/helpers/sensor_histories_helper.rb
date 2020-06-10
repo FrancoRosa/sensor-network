@@ -1,0 +1,2 @@
+module SensorHistoriesHelper
+end

@@ -1,15 +1,16 @@
 class Sensor < ApplicationRecord
   belongs_to :device
-  validates :device_id, presence: true
-  validates :variable_id, presence: true
-  validates :value, presence: true
-
-  def sensor_device
-    @device = Device.find(device_id)
-  end
-
-  def sensor_variable
-    @variable = Variable.find(variable_id)
-  end
+  belongs_to :variable
+  has_many :sensor_histories
   
+  validates :device_id, presence: true
+  validates :variable_id, presence: true, uniqueness: true
+  validates :value, presence: true
+  after_update :save_on_history
+
+  private 
+
+  def save_on_history
+    SensorHistory.create(sensor_id: id, value: value).save
+  end
 end
