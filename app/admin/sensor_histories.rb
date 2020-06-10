@@ -5,7 +5,7 @@ ActiveAdmin.register SensorHistory do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :sensor_id, :value
+  permit_params :sensor_id, :value
   #
   # or
   #

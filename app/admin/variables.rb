@@ -5,7 +5,7 @@ ActiveAdmin.register Variable do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :name, :unit
+  permit_params :name, :unit
   #
   # or
   #

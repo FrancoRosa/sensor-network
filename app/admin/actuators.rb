@@ -5,7 +5,7 @@ ActiveAdmin.register Actuator do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :device_id, :element_id, :expected_status, :current_status
+  permit_params :device_id, :element_id, :expected_status, :current_status
   #
   # or
   #

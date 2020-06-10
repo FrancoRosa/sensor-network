@@ -5,7 +5,7 @@ ActiveAdmin.register Device do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :name, :latitude, :longitude, :description, :tx_period, :tx_slot, :rx_time
+  permit_params :name, :latitude, :longitude, :description, :tx_period, :tx_slot, :rx_time
   #
   # or
   #

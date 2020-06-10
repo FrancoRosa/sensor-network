@@ -5,7 +5,7 @@ ActiveAdmin.register ActuatorHistory do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :actuator_id, :expected_status, :current_status
+  permit_params :actuator_id, :expected_status, :current_status
   #
   # or
   #

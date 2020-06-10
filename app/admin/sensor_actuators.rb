@@ -5,7 +5,7 @@ ActiveAdmin.register SensorActuator do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :sensor_id, :actuator_id, :command_id, :enable, :threshold
+  permit_params :sensor_id, :actuator_id, :command_id, :enable, :threshold
   #
   # or
   #

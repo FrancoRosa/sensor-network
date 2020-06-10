@@ -5,7 +5,7 @@ ActiveAdmin.register Sensor do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :device_id, :variable_id, :value
+  permit_params :device_id, :variable_id, :value
   #
   # or
   #

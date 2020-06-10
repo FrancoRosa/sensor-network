@@ -5,7 +5,7 @@ ActiveAdmin.register Command do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :name, :condition, :status
+  permit_params :name, :condition, :status
   #
   # or
   #
