@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
+  root 'admin/dashboard#index'
   resources :sensor_actuators
   resources :commands
   resources :actuator_histories

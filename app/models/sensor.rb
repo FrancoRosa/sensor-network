@@ -8,12 +8,12 @@ class Sensor < ApplicationRecord
   validates :value, presence: true
   validates_uniqueness_of :device_id, scope: [:variable_id]
   after_update :save_on_history
-  
+
   def features
     "#{Sensor.find(id).device.name}, #{Sensor.find(id).variable.name}"
   end
 
-  private 
+  private
 
   def save_on_history
     SensorHistory.create(sensor_id: id, value: value).save

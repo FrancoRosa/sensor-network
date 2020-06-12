@@ -8,7 +8,18 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  <nav class="top-nav">
+    <ul>
+      <li class="nav-item"><%= link_to  "Devices",  devices_path %></li>
+      <li class="nav-item"><%= link_to  "Sensors",  sensors_path %></li>
+      <li class="nav-item"><%= link_to  "Actuators", actuators_path %></li>
+      <li class="nav-item"><%= link_to  "Variables", variables_path %></li>
+      <li class="nav-item"><%= link_to  "Elements", elements_path %></li>
+    </ul>
+    <ul>
+      <li class="nav-item"><%= link_to  "Admin", admin_dashboard_path %>  </li>
+    </ul>
+  </nav>
   <body>
     <%= yield %>
   </body>
