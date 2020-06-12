@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   root 'admin/dashboard#index'
+  namespace :api, :defaults => {:format => :json} do
+    resources :sensors
+    resources :actuators
+  end
+  
   resources :sensor_actuators
   resources :commands
   resources :actuator_histories
@@ -10,5 +15,4 @@ Rails.application.routes.draw do
   resources :devices
   resources :variables
   resources :elements
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
