@@ -1,12 +1,21 @@
 class API::ActuatorsController < ApplicationController
   def index
-    if params[:id].nil?
-      @actuator = Actuator.all
+    if params[:actuator][:expected_status].nil?
+      if params[:actuator][:id].empty?
+        @actuator = Actuator.all
+      else
+        @actuator = Actuator.where(id: params[:actuator][:id])
+      end
+      respond_to do |format|
+        format.json { render json: @actuator.map {|actuator| [actuator.id, actuator.current_status] } }
+      end
     else
-      @actuator = Actuator.where(id: params[:id])
-    end
-    respond_to do |format|
-      format.json { render json: @actuator }
+      params[:actuator][:id].each_with_index do |id, index|
+        Actuator.find(id).update(expected_status: params[:actuator][:expected_status][index])
+      end
+      respond_to do |format|
+        format.json { render json: {'message': 'true'} }
+      end
     end
   end
 end

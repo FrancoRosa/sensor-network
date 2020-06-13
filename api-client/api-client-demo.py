@@ -1,26 +1,40 @@
 import requests
-# Read all the sensors
+
+############# Sensors Methods ##############
 url = 'http://localhost:3000/api/sensors'
-response = requests.get(url)
-print ">>>>>>>> Sensors"
-print response.json()
 
-# Read all the actuators
+# Read sensors
+# data={'sensor': {'id': [3, 4, 5]}} #many sensors
+# data={'sensor': {'id': [3]}} #only one
+# data={'sensor': {'id': []}} #all sensors
+# response = requests.get(url, json=data)
+
+# print(">>>tx:", data)
+# print(">>>rx:", response.json())
+
+# Update sensors
+# data={'sensor': {'id': [3], 'value': [0]}} #many sensors
+# data={'sensor': {'id': [3,4,5], 'value': [9.99, 10.11, 11.22 ]}} #many sensors
+# response = requests.get(url, json=data)
+
+# print(">>>tx:", data)
+# print(">>>rx:", response.json())
+
+############# Actuators Methods ##############
 url = 'http://localhost:3000/api/actuators'
-response = requests.get(url)
-print ">>>>>>>> Actuators"
-print response.json()
+# Read Actuators
+# data={'actuator': {'id': [1, 2, 3]}} #many actuators
+# data={'actuator': {'id': [3]}} #only one
+# data={'actuator': {'id': []}} #all sensors
+# response = requests.get(url, json=data)
 
-# Read selected sensors
-data={'id': [3] }
-url = 'http://localhost:3000/api/sensors'
-response = requests.get(url, json=data)
-print ">>>>>>>> Selected Sensors"
-print response.json()
+# print(">>>tx:", data)
+# print(">>>rx:", response.json())
 
-# Read selected sensors
-data={'id': [1] }
-url = 'http://localhost:3000/api/actuators'
+# Update Actuators
+data={'actuator': {'id': [3], 'expected_status': [0]}} #many actuators
+data={'actuator': {'id': [1,2,3], 'expected_status': [9.99, 10.11, 11.22 ]}} #many actuators
 response = requests.get(url, json=data)
-print ">>>>>>>> Selected Actuators"
-print response.json()
+
+print(">>>tx:", data)
+print(">>>rx:", response.json())
