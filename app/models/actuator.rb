@@ -6,14 +6,12 @@ class Actuator < ApplicationRecord
   validates :element_id, presence: true
   validates_uniqueness_of :device_id, scope: [:element_id]
   after_update :save_on_history
-  
   def features
     Actuator.find(id).element.name
   end
 
-  private 
-
   def save_on_history
+    SensorNetwork::Application::TOKEN += 1
     ActuatorHistory.create(actuator_id: id, expected_status: expected_status, current_status: current_status).save
   end
 end
