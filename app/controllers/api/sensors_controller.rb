@@ -1,7 +1,7 @@
 class API::SensorsController < ApplicationController
   def index
     if params[:sensor][:value].nil?
-      if params[:sensor][:id].nil?
+      if params[:sensor][:id].empty?
         @sensor = Sensor.all
       else
         @sensor = Sensor.where(id: params[:sensor][:id])
