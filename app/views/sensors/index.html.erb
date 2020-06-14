@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Description</th>
       <th>Device</th>
       <th>Variable</th>
       <th>Value</th>
@@ -16,8 +17,9 @@
   <tbody>
     <% @sensors.each do |sensor| %>
       <tr>
-        <td><%= sensor.device.name %></td>
-        <td><%= sensor.variable.name %></td>
+        <td><%= sensor.features %></td>
+        <td><%= sensor.device_id %></td>
+        <td><%= sensor.variable_id %></td>
         <td><%= sensor.value %></td>
         <td><%= sensor.variable.unit %></td>
         <td><%= link_to 'Show', sensor %></td>

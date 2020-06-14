@@ -19,8 +19,8 @@
       <% @sensor = sensor_actuator.sensor %>
       <% @actuator = sensor_actuator.actuator %>
       <tr>
-        <td><%= @sensor.device.name%>, <%= @sensor.variable.name  %></td>
-        <td><%= @actuator.element.name %></td>
+        <td><%= @sensor.features %></td>
+        <td><%= @actuator.features %></td>
         <td><%= sensor_actuator.command.name %></td>
         <td><%= sensor_actuator.enable %></td>
         <td><%= sensor_actuator.threshold %></td>

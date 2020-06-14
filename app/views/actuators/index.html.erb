@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Description</th>
       <th>Device</th>
       <th>Element</th>
       <th>Expected status</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @actuators.each do |actuator| %>
       <tr>
+        <td><%= actuator.features %></td>
         <td><%= actuator.device_id %></td>
         <td><%= actuator.element_id %></td>
         <td><%= actuator.expected_status %></td>
