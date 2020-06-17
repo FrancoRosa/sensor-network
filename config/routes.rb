@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
-  root 'devices#map'
+  root 'devices#index'
   
   namespace :api, :defaults => {:format => :json} do
     resources :sensors
     resources :actuators
   end
-  get '/map/', to: 'devices#map'
   resources :sensor_actuators
   resources :commands
   resources :actuator_histories

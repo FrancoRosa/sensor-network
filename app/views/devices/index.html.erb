@@ -1,39 +1,12 @@
 <main class="main-container">
   <p id="notice"><%= notice %></p>
   <div class="columns">
-
-    <div class="column is-one-quarter">
-      <div class="box has-background-grey-light menu">
-        <h2 class="title is-3 has-text-info">Devices</h1>
-        <p class="menu-label">Select a device:</p>
-        <ul class="menu-list">
-          <% @devices.each do |device| %>
-            <li><%= link_to  device.name, device_path(device) %></li>
-          <% end %>
-        <ul>
-        <%= link_to 'New Device', new_device_path, class: "has-text-info" %>
-      </div>
-      
-    </div>
-
-    
-    
+    <%= render "device_list" %>
     <div class="column is-half">
-      <h1 class="title is-4 has-text-info">Select a device from the menu</h1>
-    </div>
-
-    
-    
-    
-    <div class="column if-one-quarter">
-      <div class="box has-background-grey-light">
-        <h2 class="title is-3 has-text-info">About</h1>
-        <p> <i class="fas fa-project-diagram"></i>SenNet is a project to gather sensor information to control actuators in order to
-        use limited resources like water or energy eficciently.
-        </p>
-        <a href="github.com/FrancoRosa"><i class="fab fa-github"></i> FrancoRosa</a>
+      <h1 class="title is-3 has-text-info">All devices</h1>
+      <div id="maps">
       </div>
     </div>
-
-  
+    <%= render "about" %>
+  <%= render "map_index" %>
 </main>
