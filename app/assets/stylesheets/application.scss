@@ -32,6 +32,24 @@
   .columns {
   margin-top: 20px;
   width: 95%;
-    height: 95%;
+  height: 95%;
   }
+}
+
+#map {
+  height: 100%;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+}
+
+.ilogo {
+  padding: 0 10px;
+}
+
+.device-title {
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,42 +1,3 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @device.name %>
-</p>
-
-<p>
-  <strong>Latitude:</strong>
-  <%= @device.latitude %>
-</p>
-
-<p>
-  <strong>Longitude:</strong>
-  <%= @device.longitude %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @device.description %>
-</p>
-
-<p>
-  <strong>Tx period:</strong>
-  <%= @device.tx_period %>
-</p>
-
-<p>
-  <strong>Tx slot:</strong>
-  <%= @device.tx_slot %>
-</p>
-
-<p>
-  <strong>Rx time:</strong>
-  <%= @device.rx_time %>
-</p>
-
-<%= link_to 'Edit', edit_device_path(@device) %> |
-<%= link_to 'Destroy', @device, method: :delete, data: { confirm: 'Are you sure?' } %>
 
 
 <main class="main-container">
@@ -60,59 +21,76 @@
     
     
     <div class="column is-half">
-      <div>
-        <h1>Devices</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
-              <th>Description</th>
-              <th>Tx period</th>
-              <th>Tx slot</th>
-              <th>Rx time</th>
-              <th colspan="3"></th>
-            </tr>
-          </thead>
+      <div class="device-title">
+        <h1 class="title is-3 has-text-info"><%= @device.name %></h1>
+        <p class="has-text-right title is-5">
+          <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_device_path(@device) %> |
+          <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, @device, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+      </div>
+      <p class="subtitle"> <%= @device.description %></p>
+      <div id="map"> </div>
+      
 
-          <tbody>
-            <% @devices.each do |device| %>
-              <tr>
-                <td><%= device.name %></td>
-                <td><%= device.latitude %></td>
-                <td><%= device.longitude %></td>
-                <td><%= device.description %></td>
-                <td><%= device.tx_period %></td>
-                <td><%= device.tx_slot %></td>
-                <td><%= device.rx_time %></td>
-                <td><%= link_to 'Show', device %></td>
-                <td><%= link_to 'Edit', edit_device_path(device) %></td>
-                <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-
-        <br>
-
-
-
+      <div class="center-container">
+        <div class="columns center-container">
+          <div class="column menu">
+            <h3 class="has-text-info menu-label">Sensors</h3>
+            <ul class="menu-list">
+              <li><a>Sensor 1</a></li>
+              <li><a>Sensor 2</a></li>
+              <li><a>Sensor 3</a></li>
+              <li><a>Sensor 4</a></li>
+            </ul>
+          </div>
+          <div class="column menu">
+          <h3 class="has-text-info menu-label">Actuators</h3>
+            <ul class="menu-list">
+              <li><a>Actuator 1</a></li>
+              <li><a>Actuator 2</a></li>
+              <li><a>Actuator 3</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-
-    
-    
-    
     <div class="column if-one-quarter">
       <div class="box has-background-grey-light">
         <h2 class="title is-3 has-text-info">About</h1>
-        <p>SenNet is a project to gather sensor information to control actuators in order to
+        <p> <i class="fas fa-project-diagram"></i> SenNet is a project to gather sensor information to control actuators in order to
         use limited resources like water or energy eficciently.
         </p>
         <a href="github.com/FrancoRosa"><i class="fab fa-github"></i> FrancoRosa</a>
       </div>
     </div>
 
-  
+   <script>
+      function initMap() {
+        var myLatLng = {lat: <%= @device.latitude %>, lng: <%= @device.longitude %>};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: '<%= @device.name %>'
+        });
+        
+        var contentString = '<p><strong>Latitude:</strong><%= @device.latitude %></p>'+
+                            '<p><strong>Longitude:</strong><%= @device.longitude %></p>'+
+                            '<p><strong>Tx period:</strong><%= @device.tx_period %></p>'+
+                            '<p><strong>Tx slot:</strong><%= @device.tx_slot %></p>'+
+                            '<p><strong>Rx time:</strong><%= @device.rx_time %></p>';
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        infowindow.open(map, marker);
+      }
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaRxFkZP2rG7BsxZmIzraIhooR-3aqf20&callback=initMap">
+    </script>
 </main>

@@ -19,45 +19,7 @@
     
     
     <div class="column is-half">
-      <div>
-        <h1>Devices</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
-              <th>Description</th>
-              <th>Tx period</th>
-              <th>Tx slot</th>
-              <th>Rx time</th>
-              <th colspan="3"></th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% @devices.each do |device| %>
-              <tr>
-                <td><%= device.name %></td>
-                <td><%= device.latitude %></td>
-                <td><%= device.longitude %></td>
-                <td><%= device.description %></td>
-                <td><%= device.tx_period %></td>
-                <td><%= device.tx_slot %></td>
-                <td><%= device.rx_time %></td>
-                <td><%= link_to 'Show', device %></td>
-                <td><%= link_to 'Edit', edit_device_path(device) %></td>
-                <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-
-        <br>
-
-
-
-      </div>
+      <h1 class="title is-4 has-text-info">Select a device from the menu</h1>
     </div>
 
     
@@ -66,7 +28,7 @@
     <div class="column if-one-quarter">
       <div class="box has-background-grey-light">
         <h2 class="title is-3 has-text-info">About</h1>
-        <p>SenNet is a project to gather sensor information to control actuators in order to
+        <p> <i class="fas fa-project-diagram"></i>SenNet is a project to gather sensor information to control actuators in order to
         use limited resources like water or energy eficciently.
         </p>
         <a href="github.com/FrancoRosa"><i class="fab fa-github"></i> FrancoRosa</a>
