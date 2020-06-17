@@ -1,0 +1,29 @@
+<script>
+  function initMap() {
+    var myLatLng = {lat: <%= @device.latitude %>, lng: <%= @device.longitude %>};
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: myLatLng
+    });
+
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: '<%= @device.name %>'
+    });
+    
+    var contentString = '<p><strong>Latitude:</strong><%= @device.latitude %></p>'+
+                        '<p><strong>Longitude:</strong><%= @device.longitude %></p>'+
+                        '<p><strong>Tx period:</strong><%= @device.tx_period %></p>'+
+                        '<p><strong>Tx slot:</strong><%= @device.tx_slot %></p>'+
+                        '<p><strong>Rx time:</strong><%= @device.rx_time %></p>';
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    infowindow.open(map, marker);
+  }
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaRxFkZP2rG7BsxZmIzraIhooR-3aqf20&callback=initMap">
+</script>

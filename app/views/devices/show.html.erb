@@ -3,26 +3,10 @@
 <main class="main-container">
   <p id="notice"><%= notice %></p>
   <div class="columns">
-
-    <div class="column is-one-quarter">
-      <div class="box has-background-grey-light menu">
-        <h2 class="title is-3 has-text-info">Devices</h1>
-        <p class="menu-label">Select a device:</p>
-        <ul class="menu-list">
-          <% @devices.each do |device| %>
-            <li><%= link_to  device.name, device_path(device) %></li>
-          <% end %>
-        <ul>
-        <%= link_to 'New Device', new_device_path, class: "has-text-info" %>
-      </div>
-      
-    </div>
-
-    
-    
+    <%= render  "device_list" %>
     <div class="column is-half">
       <div class="device-title">
-        <h1 class="title is-3 has-text-info"><%= @device.name %></h1>
+        <h1 class="title is-3 has-text-info mb-0"><%= @device.name %></h1>
         <p class="has-text-right title is-5">
           <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_device_path(@device) %> |
           <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, @device, method: :delete, data: { confirm: 'Are you sure?' } %>
@@ -54,43 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="column if-one-quarter">
-      <div class="box has-background-grey-light">
-        <h2 class="title is-3 has-text-info">About</h1>
-        <p> <i class="fas fa-project-diagram"></i> SenNet is a project to gather sensor information to control actuators in order to
-        use limited resources like water or energy eficciently.
-        </p>
-        <a href="github.com/FrancoRosa"><i class="fab fa-github"></i> FrancoRosa</a>
-      </div>
-    </div>
-
-   <script>
-      function initMap() {
-        var myLatLng = {lat: <%= @device.latitude %>, lng: <%= @device.longitude %>};
-
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 10,
-          center: myLatLng
-        });
-
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: '<%= @device.name %>'
-        });
-        
-        var contentString = '<p><strong>Latitude:</strong><%= @device.latitude %></p>'+
-                            '<p><strong>Longitude:</strong><%= @device.longitude %></p>'+
-                            '<p><strong>Tx period:</strong><%= @device.tx_period %></p>'+
-                            '<p><strong>Tx slot:</strong><%= @device.tx_slot %></p>'+
-                            '<p><strong>Rx time:</strong><%= @device.rx_time %></p>';
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-        infowindow.open(map, marker);
-      }
-    </script>
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaRxFkZP2rG7BsxZmIzraIhooR-3aqf20&callback=initMap">
-    </script>
+    
+    <%= render  "about" %>
+   <%= render  "map_show" %>
 </main>

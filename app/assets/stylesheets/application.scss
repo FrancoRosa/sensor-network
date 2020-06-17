@@ -52,4 +52,17 @@
 .device-title {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+
+  h1 {
+    margin-bottom: 0 !important;
+  }
 }
+
+hr {
+  padding: 0;
+  margin: 0;
+}
+
