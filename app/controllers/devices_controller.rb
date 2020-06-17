@@ -7,9 +7,13 @@ class DevicesController < ApplicationController
     @devices = Device.all
   end
 
+  def map
+    @devices = Device.all
+  end
   # GET /devices/1
   # GET /devices/1.json
   def show
+    @devices = Device.all
   end
 
   # GET /devices/new

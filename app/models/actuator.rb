@@ -1,7 +1,9 @@
 class Actuator < ApplicationRecord
   belongs_to :device
   belongs_to :element
-  has_many :actuator_histories
+  has_many :actuator_histories, dependent: :destroy
+  has_many :sensor_actuators, dependent: :destroy
+
   validates :device_id, presence: true
   validates :element_id, presence: true
   validates_uniqueness_of :device_id, scope: [:element_id]

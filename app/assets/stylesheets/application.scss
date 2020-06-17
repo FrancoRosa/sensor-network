@@ -10,22 +10,28 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
  *= require_self
  */
-.top-nav {
-  width: 100%;
-  background-color: rgba(17, 62, 211, 0.568);
-  display: flex;
-  justify-content: space-between;
-}
-.nav-item {
-  display: inline-block;
-  padding: 5px 20px;
- 
+
+@import "bulma";
+
+
+.dropdown {
+  background-color: $dark;
 }
 
-.nav-item a {
-  text-decoration: none;
-  color: white;
+.brand-mod {
+  margin: 0;
+  padding: 0
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+
+  .columns {
+  margin-top: 20px;
+  width: 95%;
+    height: 95%;
+  }
 }

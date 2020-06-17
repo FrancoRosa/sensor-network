@@ -1,7 +1,8 @@
 class Sensor < ApplicationRecord
   belongs_to :device
   belongs_to :variable
-  has_many :sensor_histories
+  has_many :sensor_histories, dependent: :destroy
+  has_many :sensor_actuators, dependent: :destroy
   
   validates :device_id, presence: true
   validates :variable_id, presence: true
@@ -27,6 +28,7 @@ class Sensor < ApplicationRecord
         actuator = sensoractuator.actuator
         command = sensoractuator.command
         actuator.update(expected_status: command.status) if eval(command.condition)
+        # Imrpove this part
       end
     end
   end

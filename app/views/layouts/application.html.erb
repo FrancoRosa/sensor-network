@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="has-background-grey-light">
   <head>
     <title>SensorNetwork</title>
     <%= csrf_meta_tags %>
@@ -7,22 +7,33 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css' %>
   </head>
-  <nav class="top-nav">
-    <ul>
-      <li class="nav-item"><%= link_to  "Devices",  devices_path %></li>
-      <li class="nav-item"><%= link_to  "Sensors",  sensors_path %></li>
-      <li class="nav-item"><%= link_to  "Actuators", actuators_path %></li>
-      <li class="nav-item"><%= link_to  "Variables", variables_path %></li>
-      <li class="nav-item"><%= link_to  "Elements", elements_path %></li>
-      <li class="nav-item"><%= link_to  "SensorActuator", sensor_actuators_path %></li>
-      <li class="nav-item"><%= link_to  "Commands", commands_path %></li>
-    </ul>
-    <ul>
-      <li class="nav-item"><%= link_to  "Admin", admin_dashboard_path %>  </li>
-    </ul>
+  <nav class="navbar is-dark">
+    <div class="navbar-brand" >
+      <a class="navbar-item has-text-info title" href="/">
+        <i class="fas fa-project-diagram"></i>SenNet
+      </a>
+    </div>
+    <div class="navbar-start" >
+      <div class="navbar-brand " >
+        <%= link_to  "Home",  map_path, class:"navbar-item has-text-info subtitle is-5"  %>
+      </div>
+      <div class="navbar-brand" >
+        <%= link_to  "Devices",  devices_path, class:"navbar-item has-text-info subtitle is-5"  %>
+      </div>
+    </div>
+    <div class="navbar-end" >
+      <div class="navbar-brand " >
+        <%= link_to  "Sign In",  devices_path, class:"navbar-item has-text-info subtitle is-5"  %>
+      </div>
+      <div class="navbar-brand " >
+        <%= link_to  "Sign Out",  devices_path, class:"navbar-item has-text-info subtitle is-5"  %>
+      </div>
+    </div>
+
   </nav>
-  <body>
+  <body >
     <%= yield %>
   </body>
 </html>
