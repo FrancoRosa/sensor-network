@@ -21,18 +21,20 @@
           <div class="column menu">
             <h3 class="has-text-info menu-label">Sensors</h3>
             <ul class="menu-list">
-              <li><a>Sensor 1</a></li>
-              <li><a>Sensor 2</a></li>
-              <li><a>Sensor 3</a></li>
-              <li><a>Sensor 4</a></li>
+              <% @device.sensors.each do |sensor| %>
+                <li> <%= link_to  sensor.variable.name, sensor_path(sensor) %> </li>
+              <% end %>
+              <%= link_to 'NewSensor', new_sensor_path(@device), class: "has-text-info" %>
             </ul>
           </div>
           <div class="column menu">
           <h3 class="has-text-info menu-label">Actuators</h3>
             <ul class="menu-list">
-              <li><a>Actuator 1</a></li>
-              <li><a>Actuator 2</a></li>
-              <li><a>Actuator 3</a></li>
+              <% @device.actuators.each do |actuator| %>
+                <li> <%= link_to  actuator.element.name, actuator_path(actuator) %> </li>
+              <% end %>
+              <%= link_to 'New Actuator', new_actuator_path(@device), class: "has-text-info" %>
+
             </ul>
           </div>
         </div>

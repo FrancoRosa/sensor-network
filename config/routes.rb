@@ -6,13 +6,15 @@ Rails.application.routes.draw do
     resources :sensors
     resources :actuators
   end
+
   resources :sensor_actuators
   resources :commands
   resources :actuator_histories
-  resources :actuators
   resources :sensor_histories
-  resources :sensors
-  resources :devices
   resources :variables
   resources :elements
+
+  resources :devices
+  resources :sensors
+  resources :actuators
 end

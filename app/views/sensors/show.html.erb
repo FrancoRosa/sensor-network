@@ -22,3 +22,48 @@
 
 <%= link_to 'Edit', edit_sensor_path(@sensor) %> |
 <%= link_to 'Back', sensors_path %>
+<% @device = @sensor.device %>
+
+
+
+
+<main class="main-container">
+  <p id="notice"><%= notice %></p>
+  <div class="columns">
+    <%= render  "sensor_actuator_list" %>
+    <div class="column is-half">
+      <div class="device-title">
+        <h1 class="title is-3 has-text-info mb-0"><%= @device.name %></h1>
+        <p class="has-text-right title is-5">
+          <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_device_path(@device) %> |
+          <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, @device, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+      </div>
+      <p class="subtitle"> <%= @device.description %></p>
+      <div id="map"> </div>
+      
+
+      <div class="center-container">
+        <div class="columns center-container">
+          <div class="column menu">
+            <h3 class="has-text-info menu-label">Sensors</h3>
+            <ul class="menu-list">
+              <% @device.sensors.each do |sensor| %>
+                <li> <%= link_to  sensor.variable.name, sensor_path(sensor) %> </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="column menu">
+          <h3 class="has-text-info menu-label">Actuators</h3>
+            <ul class="menu-list">
+              <% @device.actuators.each do |actuator| %>
+                <li> <%= link_to  actuator.element.name, actuator_path(actuator) %> </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <%= render  "devices/about" %>
+</main>

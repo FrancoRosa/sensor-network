@@ -1,0 +1,24 @@
+<div class="column is-one-quarter">
+  
+  <div class="box has-background-grey-light menu">
+    <p class="menu-label">Select a sensor:</p>
+    <ul class="menu-list">
+      <% @device.sensors.each do |sensor| %>
+        <li><%= link_to  sensor.variable.name, sensor_path(sensor) %></li>
+      <% end %>
+    <ul>
+    <%= link_to 'New Sensor', new_sensor_path, class: "has-text-info" %>
+  </div>
+
+  <div class="box has-background-grey-light menu">
+    <p class="menu-label">Select an actuator:</p>
+    <ul class="menu-list">
+      <% @device.actuators.each do |actuator| %>
+        <li><%= link_to  actuator.element.name, actuator_path(actuator) %></li>
+      <% end %>
+    <ul>
+    <%= link_to 'New Actuator', new_actuator_path, class: "has-text-info" %>
+  </div>
+
+
+</div>
