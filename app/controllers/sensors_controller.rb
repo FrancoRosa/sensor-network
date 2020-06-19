@@ -10,6 +10,7 @@ class SensorsController < ApplicationController
   # GET /sensors/1
   # GET /sensors/1.json
   def show
+    @history = SensorHistory.where(sensor_id: params[:id]).order('created_at')
   end
 
   # GET /sensors/new

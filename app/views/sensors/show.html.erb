@@ -1,65 +1,41 @@
 
 <% @device = @sensor.device %>
-
-
-
-
+<% unit = @sensor.variable.unit %>
 <main class="main-container">
   <div class="columns">
     <%= render  "sensor_actuator_list" %>
     <div class="column is-half">
       <div class="device-title">
-        <h1 class="title is-3 has-text-info mb-0"><%= @sensor.variable.name %></h1>
+        <div>
+          <h1 class="title is-3 has-text-info"><%= @sensor.variable.name %></h1>
+        </div>
         <p class="has-text-right title is-5">
           <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_sensor_path(@sensor) %> |
           <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, sensor_path(@sensor), 
           method: :delete, data: { confirm: 'Are you sure?' } %>
         </p>
       </div>
-      <p class="subtitle"> All values are expressed in <%= @sensor.variable.unit %></p>
-      <div id="map"> 
-        <p><strong>Device:</strong><%= @sensor.device.name %></p>
-        <p>
-          <strong>Variable:</strong>
-          <%= @sensor.variable.name %>
-        </p>
-
-        <p>
-          <strong>Value:</strong>
-          <%= @sensor.value %>
-        </p>
-
-        <p>
-          <strong>Unit:</strong>
-          <%= @sensor.variable.unit %>
-        </p>
-
-        <%= link_to 'Edit', edit_sensor_path(@sensor) %> |
-        <%= link_to 'Back', sensors_path %>
+      <div>
+        <p class="subtitle is-6 has-text-grey">Last update <%= time_ago_in_words(@sensor.updated_at) %> ago</p>
+        <p class="subtitle is-6 has-text-grey"> All values given in <%= unit %></p> 
+      </div>
+      <canvas id="myChart" width="400" height="400"></canvas>
+      <div id="map">
+        <% @history.each do |history|%> 
+          <div>
+            <span><%= history.value %></span>
+            <%= time_tag history.created_at %>
+          </div>
+        <% end %>
       </div>
       
 
       <div class="center-container">
-        <div class="columns center-container">
-          <div class="column menu">
-            <h3 class="has-text-info menu-label">Sensors</h3>
-            <ul class="menu-list">
-              <% @device.sensors.each do |sensor| %>
-                <li> <%= link_to  sensor.variable.name, sensor_path(sensor) %> </li>
-              <% end %>
-            </ul>
-          </div>
-          <div class="column menu">
-          <h3 class="has-text-info menu-label">Actuators</h3>
-            <ul class="menu-list">
-              <% @device.actuators.each do |actuator| %>
-                <li> <%= link_to  actuator.element.name, actuator_path(actuator) %> </li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
+        
       </div>
     </div>
     
     <%= render  "devices/about" %>
+  <%= render  "data_plot" %>
+
 </main>

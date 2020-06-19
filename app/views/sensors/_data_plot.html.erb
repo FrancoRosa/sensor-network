@@ -1,0 +1,33 @@
+<% values = @history.pluck(:value)%>
+<% labels = @history.map{ |x| x.created_at.to_formatted_s(:short) } %>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myData =  <%= values %>;
+    var myLabel =  [ <% labels.each do |label|%>'<%= label %>', <% end %> ]
+    var myUnit = '<%= @sensor.variable.name %>'
+    var white = 'rgb(250, 250, 250)'
+    var blue = 'rgb(0, 128, 255)'
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: myLabel,
+            datasets: [{
+                label: myUnit,
+                data: myData,
+                fill: false,
+                backgroundColor: white,
+                borderColor: blue,
+                
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
