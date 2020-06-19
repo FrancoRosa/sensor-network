@@ -17,10 +17,6 @@ class SensorsController < ApplicationController
     @sensor = Sensor.new
     @device_options = Device.all.map { |x| [x.name, x.id] }
     @variable_options = Variable.all.map { |x| [x.name, x.id] }
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>"
-    puts " #{@device_options}"
-    puts " #{@variable_options}"
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>"
   end
 
   # GET /sensors/1/edit
@@ -60,11 +56,9 @@ class SensorsController < ApplicationController
   # DELETE /sensors/1
   # DELETE /sensors/1.json
   def destroy
+    @device = @sensor.device
     @sensor.destroy
-    respond_to do |format|
-      format.html { redirect_to sensors_url, notice: 'Sensor was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to device_path(@device), notice: 'Sensor was successfully destroyed.'
   end
 
   private

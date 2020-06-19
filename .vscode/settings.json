@@ -1,6 +1,5 @@
 {
   "clock.alignment": "Right",
-
-	// See https://www.npmjs.com/package/dateformat#mask-options for more formatting options.
+	"clock.iconName": "cpu",
 	"clock.format": "hh:MM:ss"
 }

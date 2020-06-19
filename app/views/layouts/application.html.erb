@@ -32,7 +32,30 @@
     </div>
 
   </nav>
+  <% if notice %>
+    <div class="notification is-primary">
+      <button class="delete"></button>
+      <%= notice %>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="notification is-danger">
+      <button class="delete"></button>
+      <%= alert %>
+    </div>
+  <% end %>
   <body >
     <%= yield %>
   </body>
 </html>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      $notification = $delete.parentNode;
+
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>

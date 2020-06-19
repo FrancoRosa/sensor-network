@@ -1,46 +1,42 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Device:</strong>
-  <%= @sensor.device.name %>
-</p>
-
-<p>
-  <strong>Variable:</strong>
-  <%= @sensor.variable.name %>
-</p>
-
-<p>
-  <strong>Value:</strong>
-  <%= @sensor.value %>
-</p>
-
-<p>
-  <strong>Unit:</strong>
-  <%= @sensor.variable.unit %>
-</p>
-
-<%= link_to 'Edit', edit_sensor_path(@sensor) %> |
-<%= link_to 'Back', sensors_path %>
 <% @device = @sensor.device %>
 
 
 
 
 <main class="main-container">
-  <p id="notice"><%= notice %></p>
   <div class="columns">
     <%= render  "sensor_actuator_list" %>
     <div class="column is-half">
       <div class="device-title">
-        <h1 class="title is-3 has-text-info mb-0"><%= @device.name %></h1>
+        <h1 class="title is-3 has-text-info mb-0"><%= @sensor.variable.name %></h1>
         <p class="has-text-right title is-5">
-          <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_device_path(@device) %> |
-          <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, @device, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_sensor_path(@sensor) %> |
+          <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, sensor_path(@sensor), 
+          method: :delete, data: { confirm: 'Are you sure?' } %>
         </p>
       </div>
-      <p class="subtitle"> <%= @device.description %></p>
-      <div id="map"> </div>
+      <p class="subtitle"> All values are expressed in <%= @sensor.variable.unit %></p>
+      <div id="map"> 
+        <p><strong>Device:</strong><%= @sensor.device.name %></p>
+        <p>
+          <strong>Variable:</strong>
+          <%= @sensor.variable.name %>
+        </p>
+
+        <p>
+          <strong>Value:</strong>
+          <%= @sensor.value %>
+        </p>
+
+        <p>
+          <strong>Unit:</strong>
+          <%= @sensor.variable.unit %>
+        </p>
+
+        <%= link_to 'Edit', edit_sensor_path(@sensor) %> |
+        <%= link_to 'Back', sensors_path %>
+      </div>
       
 
       <div class="center-container">
