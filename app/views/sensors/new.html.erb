@@ -1,5 +1,6 @@
 <h1>New Sensor</h1>
 
 <%= render 'form', sensor: @sensor %>
-
-<%= link_to 'Back', sensors_path %>
+<div class="actions">
+  <%= link_to 'Back', sensors_path, class:"button is-danger" %>
+</div>

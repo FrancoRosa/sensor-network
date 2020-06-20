@@ -140,3 +140,20 @@ tbody {
   position: fixed;
   margin-right: 20px;
 }
+
+.inline-field {
+  display: flex;
+  label {
+    min-width: 200px;
+  }
+  input {
+    margin-left: 100px;
+
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 0;
+}

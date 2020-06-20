@@ -11,42 +11,42 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="field inline-field">
+    <%= form.label "Name:" %>
+    <%= form.text_field :name, class: 'input is-primary', placeholder: 'Weather Station' %>
   </div>
 
-  <div class="field">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude %>
+  <div class="field inline-field">
+    <%= form.label "Latitude:" %>
+    <%= form.number_field :latitude, class: 'input is-small', placeholder: '-12.1324' %>
   </div>
 
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude %>
+  <div class="field inline-field">
+    <%= form.label "Longitude:" %>
+    <%= form.number_field :longitude, class: 'input is-small', placeholder: '-72.1324' %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <div class="field inline-field">
+    <%= form.label "Description" %>
+    <%= form.text_field :description, class: 'input is-small', placeholder: 'Wheater station details and features' %>
   </div>
 
-  <div class="field">
-    <%= form.label :tx_period %>
-    <%= form.number_field :tx_period %>
+  <div class="field inline-field">
+    <%= form.label "Tx Period:" %>
+    <%= form.number_field :tx_period, class: 'input is-small', placeholder: 'time in seconds' %>
   </div>
 
-  <div class="field">
-    <%= form.label :tx_slot %>
-    <%= form.number_field :tx_slot %>
+  <div class="field inline-field">
+    <%= form.label "Tx Slot:" %>
+    <%= form.number_field :tx_slot, class: 'input is-small', placeholder: 'time in seconds' %>
   </div>
 
-  <div class="field">
-    <%= form.label :rx_time %>
-    <%= form.number_field :rx_time %>
+  <div class="field inline-field">
+    <%= form.label "Rx Time:" %>
+    <%= form.number_field :rx_time, class: 'input is-small', placeholder: 'time in seconds' %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "button is-info save-button"%>
   </div>
 <% end %>

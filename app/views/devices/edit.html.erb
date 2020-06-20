@@ -1,6 +1,16 @@
-<h1>Editing Device</h1>
 
-<%= render 'form', device: @device %>
-
-<%= link_to 'Show', @device %> |
-<%= link_to 'Back', devices_path %>
+<main class="main-container">
+  <div class="columns">
+    <%= render "device_list" %>
+    <div class="column is-half">
+      <h1 class="title is-3 has-text-info">Edit <%= @device.name %> </h1>
+      <div>
+        <%= render 'form', device: @device %>
+        <div class="actions">
+          <%= link_to 'Back', device_path(@device), class:"button is-danger" %>
+        </div>
+      </div>
+    </div>
+    <%= render "about" %>
+  <%= render "map_index" %>
+</main>
