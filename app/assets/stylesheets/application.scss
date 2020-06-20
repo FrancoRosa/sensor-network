@@ -15,6 +15,10 @@
 
 @import "bulma";
 
+.navbar {
+  top: 0;
+  position: sticky;
+}
 
 .dropdown {
   background-color: $dark;
@@ -86,6 +90,32 @@ hr {
   align-items: center;
 }
 
+.dataTables_filter {
+  label {
+    input {
+      border-radius: 5px;
+      border-color: $info;
+      font-size: 1rem;
+      color: $grey;
+      background-color: $grey-light;
+      margin-left: 10px;
+    }
+  }
+}
+
+.dataTables_length {
+  label {
+    select {
+      border-radius: 5px;
+      border-color:$info;
+      font-size: 1rem;
+      color: $grey;
+      margin-bottom: 5px;
+    }
+  }
+
+}
+
 tbody {
   width: 100%;
   tr {
@@ -97,8 +127,16 @@ tbody {
   padding: 0 5px;
 } 
 
-
-
 .table {
   width: 70%;
+}
+
+.left-list-container {
+  position: fixed;
+  margin-left: -20px;
+}
+
+.right-about-container {
+  position: fixed;
+  margin-right: 20px;
 }

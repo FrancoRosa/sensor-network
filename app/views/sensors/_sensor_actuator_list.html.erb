@@ -1,4 +1,4 @@
-<div class="column is-one-quarter">
+<div class="column is-one-quarter left-list-container">
   <h2 class="subtitle is-5 has-text-info"><%= @device.name %></h2>
   <div class="box has-background-grey-light menu">
     <p class="menu-label">Select a sensor:</p>
@@ -9,7 +9,6 @@
     <ul>
     <%= link_to 'New Sensor', new_sensor_path, class: "has-text-info" %>
   </div>
-
   <div class="box has-background-grey-light menu">
     <p class="menu-label">Select an actuator:</p>
     <ul class="menu-list">
@@ -19,6 +18,4 @@
     <ul>
     <%= link_to 'New Actuator', new_actuator_path, class: "has-text-info" %>
   </div>
-
-
 </div>
