@@ -1,0 +1,13 @@
+<% values = @history.pluck(:value)%>
+<% labels = @history.map{ |x| x.created_at.to_formatted_s(:short) } %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="/packs/js/dataTables.bulma.min.js"></script>
+<script>
+    $('.table').DataTable({
+        paging: true,
+        pagingType: 'full_numbers',
+        ordering: true,
+        info: true,
+    })
+</script>

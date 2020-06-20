@@ -17,16 +17,22 @@
                 fill: false,
                 backgroundColor: white,
                 borderColor: blue,
-                
             }]
         },
         options: {
             scales: {
+                xAxes: [{
+                    ticks: {
+                         autoSkip: true,
+                         maxTicksLimit: 5.1
+                     }
+                }],
+                
                 yAxes: [{
                     ticks: {
                         beginAtZero: true
                     }
-                }]
+                }],
             }
         }
     });

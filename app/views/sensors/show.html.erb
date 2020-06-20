@@ -19,23 +19,31 @@
         <p class="subtitle is-6 has-text-grey">Last update <%= time_ago_in_words(@sensor.updated_at) %> ago</p>
         <p class="subtitle is-6 has-text-grey"> All values given in <%= unit %></p> 
       </div>
-      <canvas id="myChart" width="400" height="400"></canvas>
-      <div id="map">
-        <% @history.each do |history|%> 
-          <div>
-            <span><%= history.value %></span>
-            <%= time_tag history.created_at %>
-          </div>
-        <% end %>
-      </div>
-      
-
-      <div class="center-container">
+      <canvas class="box has-background-grey-light" id="myChart" width="400" height="300"></canvas>
+      <div class="container box has-background-grey-light">
+        <table class="table has-background-grey-light">
+          <thead>
+            <tr>
+              <th class="has-text-right">Timestamp</th>
+              <th class="has-text-right">Value (<%= unit %>)</th>
+            </tr>
+          </thead>
+                 
+          <tbody>
+            <% @history.each do |history| %>
+            <tr>
+              <td class="has-text-right"><%= history.created_at.to_formatted_s(:short)%></td>
+              <td class="has-text-right"><%= '%.2f' % history.value %></td>
+            </tr>            
+            <% end %>
+          </tbody>
+        </table>
         
       </div>
     </div>
     
     <%= render  "devices/about" %>
+  <%= render  "data_table" %>
   <%= render  "data_plot" %>
 
 </main>

@@ -71,3 +71,19 @@ hr {
   margin: 0;
 }
 
+.pagination-link {
+  font-size: 12px;
+}
+
+.dataTables_info {
+  font-size: 12px;
+}
+
+.no-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: -10px 0;
+  padding: 0;
+}
+
