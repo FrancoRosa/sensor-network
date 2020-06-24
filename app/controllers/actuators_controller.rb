@@ -15,6 +15,7 @@ class ActuatorsController < ApplicationController
   # GET /actuators/new
   def new
     @actuator = Actuator.new
+    @device = Device.find(params[:device_id])
   end
 
   # GET /actuators/1/edit
@@ -25,6 +26,7 @@ class ActuatorsController < ApplicationController
   # POST /actuators.json
   def create
     @actuator = Actuator.new(actuator_params)
+    @device = Device.find(params[:actuator][:device_id])
 
     respond_to do |format|
       if @actuator.save

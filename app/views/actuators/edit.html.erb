@@ -1,6 +1,18 @@
-<h1>Editing Actuator</h1>
-
-<%= render 'form', actuator: @actuator %>
-
-<%= link_to 'Show', @actuator %> |
-<%= link_to 'Back', actuators_path %>
+<% @device = @actuator.device %>
+<main class="main-container">
+  <div class="columns">
+    <%= render "sensor_actuator_list" %>
+    <div class="column is-one-quarter">
+    </div>
+    <div class="column is-half">
+      <h1 class="title is-2 has-text-info"> <%= @actuator.element.name %></h1>
+      <h1 class="title is-3 has-text-info">Edit Actuator</h1>
+      <div>
+        <%= render 'form', actuator: @actuator %>
+        <div class="actions">
+          <%= link_to 'Back', actuator_path(@actuator), class:"button is-danger" %>
+        </div>
+      </div>
+    </div>
+    <%= render "devices/about" %>
+</main>
