@@ -1,6 +1,19 @@
-<h1>New Sensor</h1>
 
-<%= render 'form', sensor: @sensor %>
-<div class="actions">
-  <%= link_to 'Back', sensors_path, class:"button is-danger" %>
-</div>
+
+<main class="main-container">
+  <div class="columns">
+    <%= render "sensor_actuator_list" %>
+    <div class="column is-one-quarter">
+    </div>
+    <div class="column is-half">
+      <h1 class="title is-2 has-text-info"> <%= @device.name %></h1>
+      <h1 class="title is-3 has-text-info">New Sensor</h1>
+      <div>
+        <%= render 'form', sensor: @sensor %>
+        <div class="actions">
+          <%= link_to 'Back', device_path(@device), class:"button is-danger" %>
+        </div>
+      </div>
+    </div>
+    <%= render "devices/about" %>
+</main>

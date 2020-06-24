@@ -16,6 +16,7 @@ class SensorsController < ApplicationController
   # GET /sensors/new
   def new
     @sensor = Sensor.new
+    @device = Device.find(params[:device_id])
     @device_options = Device.all.map { |x| [x.name, x.id] }
     @variable_options = Variable.all.map { |x| [x.name, x.id] }
   end

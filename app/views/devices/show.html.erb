@@ -23,7 +23,7 @@
               <% @device.sensors.each do |sensor| %>
                 <li> <%= link_to  sensor.variable.name, sensor_path(sensor) %> </li>
               <% end %>
-              <%= link_to 'NewSensor', new_sensor_path(@device), class: "has-text-info" %>
+              <%= link_to 'NewSensor', new_sensor_path(device_id: @device), class: "has-text-info" %>
             </ul>
           </div>
           <div class="column menu">
@@ -32,7 +32,7 @@
               <% @device.actuators.each do |actuator| %>
                 <li> <%= link_to  actuator.element.name, actuator_path(actuator) %> </li>
               <% end %>
-              <%= link_to 'New Actuator', new_actuator_path(@device), class: "has-text-info" %>
+              <%= link_to 'New Actuator', new_actuator_path(device_id: @device), class: "has-text-info" %>
 
             </ul>
           </div>
