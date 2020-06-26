@@ -10,6 +10,7 @@ class ActuatorsController < ApplicationController
   # GET /actuators/1
   # GET /actuators/1.json
   def show
+    @history = ActuatorHistory.where(actuator_id: params[:id]).order('created_at')
   end
 
   # GET /actuators/new

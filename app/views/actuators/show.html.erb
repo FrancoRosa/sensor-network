@@ -1,23 +1,52 @@
+<% @device = @actuator.device %>
+<% element = @actuator.element.name %>
+<main class="main-container">
+  <div class="columns">
+    <div class="column is-one-quarter"> 
+    </div>
+    <%= render  "sensor_actuator_list" %>
+    <div class="column is-half">
+      <div class="device-title">
+        <div>
+          <h1 class="title is-3 has-text-info"><%= @actuator.element.name %></h1>
+        </div>
+        <p class="has-text-right title is-5">
+          <%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_actuator_path(@actuator) %> |
+          <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, actuator_path(@actuator), 
+          method: :delete, data: { confirm: 'Are you sure?' } %>
+        </p>
+      </div>
+      <div>
+        <p class="subtitle is-6 has-text-grey">Last update <%= time_ago_in_words(@actuator.updated_at) %> ago</p>
+      </div>
+      <canvas class="box has-background-grey-light" id="myChart" width="400" height="300"></canvas>
+      <div class="container box has-background-grey-light">
+        <table class="table has-background-grey-light">
+          <thead class="table-header">
+            <tr class="table-header">
+              <th class="has-text-right subtitle is-6">Timestamp</th>
+              <th class="has-text-right subtitle is-6">CurrentStatus</th>
+              <th class="has-text-right subtitle is-6">ExpectedStatus</th>
+            </tr>
+          </thead>
+                 
+          <tbody class="table-data">
+            <% @history.each do |history| %>
+            <tr class="table-data">
+              <td class="has-text-right subtitle is-7"><%= history.created_at.to_formatted_s(:short)%></td>
+              <td class="has-text-right subtitle is-7"><%= '%.2f' % history.current_status %></td>
+              <td class="has-text-right subtitle is-7"><%= '%.2f' % history.expected_status %></td>
+            </tr>            
+            <% end %>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+    
+    <%= render  "devices/about" %>
+  <%= render  "data_table" %>
+  <%= render  "data_plot" %>
 
-<p>
-  <strong>Device:</strong>
-  <%= @actuator.device.name %>
-</p>
+</main>
 
-<p>
-  <strong>Element:</strong>
-  <%= @actuator.element.name %>
-</p>
-
-<p>
-  <strong>Expected status:</strong>
-  <%= @actuator.expected_status %>
-</p>
-
-<p>
-  <strong>Current status:</strong>
-  <%= @actuator.current_status %>
-</p>
-
-<%= link_to 'Edit', edit_actuator_path(@actuator) %> |
-<%= link_to 'Back', actuators_path %>

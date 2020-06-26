@@ -1,0 +1,39 @@
+<% values = @history.pluck(:current_status)%>
+<% labels = @history.map{ |x| x.created_at.to_formatted_s(:short) } %>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myData =  <%= values %>;
+    var myLabel =  [ <% labels.each do |label|%>'<%= label %>', <% end %> ]
+    var myUnit = ' '
+    var white = 'rgb(250, 250, 250)'
+    var blue = 'rgb(0, 128, 255)'
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: myLabel,
+            datasets: [{
+                label: myUnit,
+                data: myData,
+                fill: false,
+                backgroundColor: white,
+                borderColor: blue,
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                         autoSkip: true,
+                         maxTicksLimit: 5.1
+                     }
+                }],
+                
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+            }
+        }
+    });
+</script>
