@@ -27,7 +27,7 @@
 
   <div class="field inline-field">
     <%= form.label :value %>
-    <%= form.text_field :value, class: "input" %>
+    <%= form.number_field :value, in: -1000..1000, step: 0.01, class: "input" %>
   </div>
 
   <div class="actions">

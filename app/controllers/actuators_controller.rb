@@ -57,11 +57,9 @@ class ActuatorsController < ApplicationController
   # DELETE /actuators/1
   # DELETE /actuators/1.json
   def destroy
+    @device = @actuator.device
     @actuator.destroy
-    respond_to do |format|
-      format.html { redirect_to actuators_url, notice: 'Actuator was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to device_path(@device), notice: 'Actuator was successfully destroyed.'
   end
 
   private

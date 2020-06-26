@@ -18,12 +18,12 @@
 
   <div class="field inline-field">
     <%= form.label "Latitude:" %>
-    <%= form.number_field :latitude, class: 'input is-small', placeholder: '-12.1324' %>
+    <%= form.number_field :latitude, in: -180..180, step: 0.00001, class: 'input is-small', placeholder: '-12.1324' %>
   </div>
 
   <div class="field inline-field">
     <%= form.label "Longitude:" %>
-    <%= form.number_field :longitude, class: 'input is-small', placeholder: '-72.1324' %>
+    <%= form.number_field :longitude, in: -180..180, step: 0.00001, class: 'input is-small', placeholder: '-72.1324' %>
   </div>
 
   <div class="field inline-field">
