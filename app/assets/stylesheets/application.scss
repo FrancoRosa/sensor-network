@@ -158,3 +158,23 @@ tbody {
   justify-content: flex-end;
   padding: 5px 0;
 }
+
+.common-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9em;
+  
+  td, th {
+    border: 1px solid #ddd; 
+    padding: 8px;
+  }
+
+  tr:hover {background-color: rgb(173, 173, 173);}
+  
+  th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: $info;
+  }
+}

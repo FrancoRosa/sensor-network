@@ -11,32 +11,38 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field inline-field">
     <%= form.label :sensor_id %>
+    <div class="select is-info">
     <%= form.collection_select :sensor_id, Sensor.all, :id, :features %>
+    </div>
   </div>
 
-  <div class="field">
+  <div class="field inline-field">
     <%= form.label :actuator_id %>
+    <div class="select is-info">
     <%= form.collection_select :actuator_id, Actuator.all, :id, :features %>
+    </div>
   </div>
 
-  <div class="field">
+  <div class="field inline-field">
     <%= form.label :command_id %>
+    <div class="select is-info">
     <%= form.collection_select :command_id, Command.all, :id, :name %>
+    </div>
   </div>
 
-  <div class="field">
+  <div class="field inline-field">
     <%= form.label :enable %>
     <%= form.check_box :enable %>
   </div>
 
-  <div class="field">
+  <div class="field inline-field">
     <%= form.label :threshold %>
-    <%= form.text_field :threshold %>
+    <%= form.text_field :threshold, class: 'input is-small' %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "button is-info save-button"%>
   </div>
 <% end %>

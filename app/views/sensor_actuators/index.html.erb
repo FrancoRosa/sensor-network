@@ -1,36 +1,41 @@
 
-<h1>Sensor Actuators</h1>
+<main class="main-container">
+  <div class="columns">
+    <%= render "devices/device_list" %>
+    <div class="column is-half">
+      <h1 class="title is-3 has-text-info">All Actions</h1>
+      <div>
+        <table class="common-table">
+          <thead>
+            <tr>
+              <th>Sensor</th>
+              <th>Actuator</th>
+              <th>Command</th>
+              <th>Enable</th>
+              <th>Threshold</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Sensor</th>
-      <th>Actuator</th>
-      <th>Command</th>
-      <th>Enable</th>
-      <th>Threshold</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+          <tbody>
+            <% @sensor_actuators.each do |sensor_actuator| %>
+              <% @sensor = sensor_actuator.sensor %>
+              <% @actuator = sensor_actuator.actuator %>
+              <tr>
+                <td><%= @sensor.features %></td>
+                <td><%= @actuator.features %></td>
+                <td><%= sensor_actuator.command.name %></td>
+                <td><%= sensor_actuator.enable %></td>
+                <td><%= sensor_actuator.threshold %></td>
+                <td class="has-text-centered"><%= link_to '<i class="fas fa-edit"></i>'.html_safe, edit_sensor_actuator_path(sensor_actuator) %>
+                    <%= link_to '<i class="fas fa-trash-alt"></i>'.html_safe, sensor_actuator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= link_to 'New Sensor Actuator', new_sensor_actuator_path %>
+      </div>
+    </div>
+    <%= render "devices/about" %>
+</main>
 
-  <tbody>
-    <% @sensor_actuators.each do |sensor_actuator| %>
-      <% @sensor = sensor_actuator.sensor %>
-      <% @actuator = sensor_actuator.actuator %>
-      <tr>
-        <td><%= @sensor.features %></td>
-        <td><%= @actuator.features %></td>
-        <td><%= sensor_actuator.command.name %></td>
-        <td><%= sensor_actuator.enable %></td>
-        <td><%= sensor_actuator.threshold %></td>
-        <td><%= link_to 'Show', sensor_actuator %></td>
-        <td><%= link_to 'Edit', edit_sensor_actuator_path(sensor_actuator) %></td>
-        <td><%= link_to 'Destroy', sensor_actuator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Sensor Actuator', new_sensor_actuator_path %>

@@ -5,15 +5,18 @@ class SensorActuatorsController < ApplicationController
   # GET /sensor_actuators.json
   def index
     @sensor_actuators = SensorActuator.all
+    @devices = Device.all
   end
 
   # GET /sensor_actuators/1
   # GET /sensor_actuators/1.json
   def show
+    @devices = Device.all
   end
 
   # GET /sensor_actuators/new
   def new
+    @devices = Device.all
     @sensor_actuator = SensorActuator.new
   end
 
