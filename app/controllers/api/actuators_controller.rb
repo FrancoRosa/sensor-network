@@ -12,7 +12,7 @@ class API::ActuatorsController < ApplicationController
           @actuator = Actuator.where(id: params[:actuator][:id])
         end
         respond_to do |format|
-          format.json { render json: @actuator.map {|actuator| [actuator.id, actuator.current_status] } }
+          format.json { render json: @actuator.map {|actuator| [actuator.id, actuator.expected_status] } }
         end
       else
         params[:actuator][:id].each_with_index do |id, index|

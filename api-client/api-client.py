@@ -1,6 +1,8 @@
 from time import sleep
 import requests
 url = 'http://localhost:3000/api/'
+#url = 'https://sensor-network-lora.herokuapp.com/api/'
+
 sensors = url + 'sensors'
 actuators = url + 'actuators'
 
@@ -13,12 +15,14 @@ while True:
   # check if there is new updated data
 
   response = requests.get(actuators, json={}).json()
+  print('.', end='', flush=True)
   if oldtoken != response.get('token'):
-    print("oldtoken", oldtoken)
+    #print("oldtoken", oldtoken)
+    print("")
     oldtoken = response.get('token')
     # read actuator expected values
     actuatorstatus = requests.get(actuators, json={'actuator': {'id': []}}).json()
-    print actuatorstatus
+    print (actuatorstatus)
   
-  sleep(5)
+  sleep(1)
   
