@@ -26,7 +26,7 @@ class API::SensorsController < ApplicationController
     if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')
       challenge = params['hub.challenge']
       if params['hub.verify_token'] == token && params['hub.mode'] == 'subscribe'
-        render status: 200, json: { 'challenge': challenge }
+        render html: challenge
       else
         render status: 403, json: { 'message': 'token error' }
       end
@@ -34,6 +34,6 @@ class API::SensorsController < ApplicationController
   end
 
   def webhook?(params)
-    params.keys.any?{ |x| x.inspect.include?('hub')} ? true : false
+    params.keys.any?{ |x| x.inspect.include?('hub') } ? true : false
   end
 end
