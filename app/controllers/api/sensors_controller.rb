@@ -22,7 +22,15 @@ class API::SensorsController < ApplicationController
   end
 
   def webhook(params)
-    render status: 200, json: { 'message': 'ok' }
+    token = 'secret-token'
+    if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')
+      challenge = params['hub.challenge']
+      if params['hub.verify_token'] == token && params['hub.mode'] == 'subscribe'
+        render status: 200, json: { 'challenge': challenge }
+      else
+        render status: 403, json: { 'message': 'token error' }
+      end
+    end
   end
 
   def webhook?(params)
