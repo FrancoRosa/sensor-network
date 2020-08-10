@@ -1,7 +1,7 @@
 import requests
 
 ############# Sensors Methods ##############
-url = 'http://localhost:3000/api/actuators'
+url = 'http://localhost:3000/api/sensors'
 # url = 'https://sensor-network-lora.herokuapp.com/api/sensors'
 
 
@@ -11,7 +11,7 @@ url = 'http://localhost:3000/api/actuators'
 # data={'sensor': {'id': []}} #all sensors
 
 # Update sensors
-# data={'sensor': {'id': [3], 'value': [0]}} #many sensors
+data={'sensor': {'id': [17], 'value': [0]}} #many sensors
 # data={'sensor': {'id': [3, 4, 5], 'value': [1.11, 2.22, 3.33 ]}} #many sensors
 
 # response = requests.get(url, json=data)
@@ -25,7 +25,7 @@ url = 'http://localhost:3000/api/actuators'
 # data={'actuator': {'id': [1, 2, 3]}} #many actuators
 # data={'actuator': {'id': [3]}} #only one
 # data={'actuator': {'id': []}} #all sensors
-data={} #all sensors
+# data={} #all sensors
 
 # Update Actuators
 # data={'actuator': {'id': [3], 'expected_status': [0]}} #many actuators

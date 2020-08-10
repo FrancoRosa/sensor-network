@@ -6,6 +6,6 @@ url = 'http://localhost:3000/api/sensors'
 
 data = {"hub.mode": "subscribe", "hub.challenge": "1817199792", "hub.verify_token": "secret-token", "id": "api"} 
 
-response = requests.get(url, json=data)
+response = requests.post(url, json={})
 print(">>> tx:", data)
 print(">>> rx:", response.content)

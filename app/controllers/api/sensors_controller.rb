@@ -1,4 +1,6 @@
 class API::SensorsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  
   def index
     if webhook?(params)
       webhook(params)
@@ -8,19 +10,20 @@ class API::SensorsController < ApplicationController
       else
         @sensor = Sensor.where(id: params[:sensor][:id])
       end
-      respond_to do |format|
-        format.json { render json: @sensor.map {|sensor| [sensor.id, sensor.value] } }
-      end
+      render json: @sensor.map { |sensor| [sensor.id, sensor.value] }
     else
       params[:sensor][:id].each_with_index do |id, index|
         Sensor.find(id).update(value: params[:sensor][:value][index])
       end
-      respond_to do |format|
-        format.json { render json: { 'message': 'true' } }
-      end
+      render json: { 'message': 'true' }
     end
   end
 
+  def create
+    puts params.inspect
+    render html: 'Ok'
+  end
+  
   def webhook(params)
     token = 'secret-token'
     if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')

@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   root 'devices#index'
   
   namespace :api, defaults: { format: :json } do
-    resources :sensors, only: [:index]
+    resources :sensors, only: [:index, :create]
+
     resources :actuators, only: [:index]
   end
 
