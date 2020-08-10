@@ -8,6 +8,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
 # Custom gems
 gem 'activeadmin'
 gem 'bulma-rails'
+gem 'figaro'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Use SCSS for stylesheets

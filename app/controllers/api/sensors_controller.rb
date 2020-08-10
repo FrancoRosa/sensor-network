@@ -20,15 +20,25 @@ class API::SensorsController < ApplicationController
   end
 
   def create
-    puts params.inspect
-    render html: 'Ok'
+    if params[:object] == 'page'
+      params[:entry].each do |entry|
+        webhook_event = entry[:messaging][0]
+        sender_psid = webhook_event[:sender][:id]
+        puts '????'
+        puts webhook_event
+        puts sender_psid
+      end
+      
+      render status: 200, html: 'Ok'
+    else
+      render status: 404, html: 'notOk'
+    end
   end
   
   def webhook(params)
-    token = 'secret-token'
     if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')
       challenge = params['hub.challenge']
-      if params['hub.verify_token'] == token && params['hub.mode'] == 'subscribe'
+      if params['hub.verify_token'] == ENV['fb_vrfy'] && params['hub.mode'] == 'subscribe'
         render html: challenge
       else
         render status: 403, json: { 'message': 'token error' }
@@ -39,4 +49,21 @@ class API::SensorsController < ApplicationController
   def webhook?(params)
     params.keys.any?{ |x| x.inspect.include?('hub') } ? true : false
   end
+
+  # // Handles messages events
+  def handleMessage(sender_psid, received_message)
+  end
+
+  # // Handles messaging_postbacks events
+  def handlePostback(sender_psid, received_postback)
+  end
+
+
+  # // Sends response messages via the Send API
+  def callSendAPI(sender_psid, response)
+  end
+  
+
+
+  
 end
