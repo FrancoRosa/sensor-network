@@ -1,3 +1,6 @@
+require "uri"
+require "net/http"
+require "json"
 class API::SensorsController < ApplicationController
   skip_before_action :verify_authenticity_token
   
@@ -24,9 +27,8 @@ class API::SensorsController < ApplicationController
       params[:entry].each do |entry|
         webhook_event = entry[:messaging][0]
         sender_psid = webhook_event[:sender][:id]
-        puts '????'
-        puts webhook_event
-        puts sender_psid
+        handlePostback(sender_psid, webhook_event[:postback]) if webhook_event[:postback]
+        handleMessage(sender_psid, webhook_event[:message]) if webhook_event[:message]
       end
       
       render status: 200, html: 'Ok'
@@ -52,18 +54,24 @@ class API::SensorsController < ApplicationController
 
   # // Handles messages events
   def handleMessage(sender_psid, received_message)
+    puts '>>>>>>>>> message Handler'
+    if received_message[:text]
+      response = { text: "You send: #{received_message[:text]}. Now send an image" }
+    end
+    callSendAPI(sender_psid, response)
   end
 
   # // Handles messaging_postbacks events
   def handlePostback(sender_psid, received_postback)
+    puts '>>>>>>>>> postback Handler'
   end
 
 
   # // Sends response messages via the Send API
   def callSendAPI(sender_psid, response)
+    uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV['fb_key']}"
+    body = { recipient: {id: sender_psid}, message: response } 
+    x = Net::HTTP.post(URI.parse(uri), body.to_json, "Content-Type" => "application/json")
+    puts x.body
   end
-  
-
-
-  
 end
