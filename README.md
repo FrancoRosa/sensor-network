@@ -76,26 +76,26 @@ response: {'token': 10} # 10 is the current value of the token
 A gateway is a device that can interface other devices with this web app. For instance, devices that can not work directly with the API.
 
 ## LoRa Gateway
-To make LoRa devices interact with the app we are following the sequence stated bellow.
+To make LoRa devices interact with the app we are following the sequence stated bellow. *Key is a _secret_ common value shared between the device and gateway
 ```mermaid
 sequenceDiagram
     Device->>+Gateway: 
     loop Every minute
         Device->>Gateway: Hey Gateway, register me please.
-        Device-->>Gateway: [[secretkey][id]]
+        Device-->>Gateway: [[key][id][connect]]
     end
     Gateway->>+Device: Yes, here are your parameters.
-    Gateway-->>+Device: [[secretkey][id][parameters]]
+    Gateway-->>+Device: [[key][id][device][parameters]]
     Note right of Device: Parameters set periodic reading an listenig periods
-    Device->>+Gateway: Ack, [[secretkey][id][Ack]] .
-    Device-->>Gateway: [[secretkey][id][Ack]] .
+    Device->>+Gateway: Ack.
+    Device-->>Gateway: [[key][id][ack]] .
     loop According to parameters
         Device->>Gateway: Send data based on *TX Period* inside *TX Slot*.
-        Device-->>Gateway:[[secretkey][id][data]]
+        Device-->>Gateway:[[key][id][data][values]]
         Gateway->>Device: Send Ack or Data stored on buffer, *inside RX time*. 
-        Gateway-->>Device:[[secretkey][id][parameters]]
+        Gateway-->>Device:[[key][id][parameters]]
         Device->>Gateway: Send Ack or Updates
-        Device-->>Gateway: [[secretkey][id][data]]
+        Device-->>Gateway: [[key][id][data][values]]
     end
 ```
 ### Gateway tasks:

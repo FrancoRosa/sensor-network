@@ -1,4 +1,5 @@
 from helpers import *
+from commands import *
 
 # serial connection
 connectionPort = '/dev/pts/4'
