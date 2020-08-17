@@ -8,10 +8,10 @@ url = 'http://localhost:3000/api/sensors'
 # Read sensors
 # data={'sensor': {'id': [3, 4, 5]}} #many sensors
 # data={'sensor': {'id': [3]}} #only one
-# data={'sensor': {'id': []}} #all sensors
+data={'sensor': {'id': []}} #all sensors
 
 # Update sensors
-data={'sensor': {'id': [17], 'value': [0]}} #many sensors
+# data={'sensor': {'id': [17], 'value': [10]}} #many one sensor
 # data={'sensor': {'id': [3, 4, 5], 'value': [1.11, 2.22, 3.33 ]}} #many sensors
 
 # response = requests.get(url, json=data)

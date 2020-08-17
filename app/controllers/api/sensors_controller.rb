@@ -7,22 +7,49 @@ class API::SensorsController < ApplicationController
   def index
     if webhook?(params)
       webhook(params)
-    elsif params[:sensor][:value].nil?
-      if params[:sensor][:id].empty?
-        @sensor = Sensor.all
-      else
-        @sensor = Sensor.where(id: params[:sensor][:id])
-      end
-      render json: @sensor.map { |sensor| [sensor.id, sensor.value] }
-    else
-      params[:sensor][:id].each_with_index do |id, index|
-        Sensor.find(id).update(value: params[:sensor][:value][index])
-      end
-      render json: { 'message': 'true' }
+    elsif read_sensors?(params)
+      read_sensors(params)
+    elsif update_sensors?(params)
+      update_sensors(params)
     end
   end
 
   def create
+    webhook_post
+  end
+
+  #
+  def read_sensors?(params)
+    params[:sensor][:value].nil?
+  end
+
+  def read_sensors(params)
+    if params[:sensor][:id].empty?
+      @sensor = Sensor.all
+    else
+      @sensor = Sensor.where(id: params[:sensor][:id])
+    end
+    render json: @sensor.map { |sensor| [sensor.id, sensor.value] }
+  end
+
+  def update_sensors?(params)
+    !params[:sensor][:id].nil?
+  end
+
+  def update_sensors(params)
+    response = []
+    params[:sensor][:id].each_with_index do |id, index|
+      if Sensor.exists?(id)
+        Sensor.find(id).update(value: params[:sensor][:value][index])
+        response << true
+      else
+        response << false
+      end
+    end
+    render json: { 'message': response }
+  end
+  # Facebook bot messenger methods
+  def webhook_post
     if params[:object] == 'page'
       params[:entry].each do |entry|
         webhook_event = entry[:messaging][0]
@@ -30,13 +57,12 @@ class API::SensorsController < ApplicationController
         handlePostback(sender_psid, webhook_event[:postback]) if webhook_event[:postback]
         handleMessage(sender_psid, webhook_event[:message]) if webhook_event[:message]
       end
-      
       render status: 200, html: 'Ok'
     else
       render status: 404, html: 'notOk'
     end
   end
-  
+
   def webhook(params)
     if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')
       challenge = params['hub.challenge']
@@ -65,7 +91,6 @@ class API::SensorsController < ApplicationController
   def handlePostback(sender_psid, received_postback)
     puts '>>>>>>>>> postback Handler'
   end
-
 
   # // Sends response messages via the Send API
   def callSendAPI(sender_psid, response)
