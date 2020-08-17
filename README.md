@@ -98,6 +98,7 @@ sequenceDiagram
         Device-->>Gateway: [[key][id][data][values]]
     end
 ```
+![Screenshot](./docs/mermaid.png)
 ### Gateway tasks:
 * Read all transmissions (Loop)
 * If register frame is received, register device, send configuration parameters
