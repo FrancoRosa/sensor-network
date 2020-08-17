@@ -1,8 +1,15 @@
+import requests
+
+#server connection
+url = 'http://localhost:3000/api/devices'
+deviceData = {'devices': {'id': [0]}}
+
 # serial connection
 from helpers import *
-connectionPort = '/dev/pts/3'
+connectionPort = '/dev/pts/5'
 import serial
 ser = serial.Serial(connectionPort)  # open serial port
+print(ser.name)         # check which port was really used
 
 #gateway
 keys = {'connection': 'secret'}
@@ -15,9 +22,19 @@ conected_devices = []
 def registerDevice(command):
   if keys['connection'] in incomeCommand:
     newDeviceID = incomeCommand.strip().replace(keys['connection'], '')
-    print('>>> New Device Connected:', id)
-    # Look for config details on database
-    # TXPeriod, TXSlot, RXTime
+    print('>>> New Device Connected:', newDeviceID)
+    deviceData['devices']['id'] = newDeviceID
+    response = requests.get(url, json=deviceData)
+    response = response.json()
+    if len(response) == 0:
+      message = 'Device %s not found'%newDeviceID
+      print(message)
+      ser.write(str2bytes(message))
+    else:
+      conected_devices.append(newDeviceID)
+      print(response)
+      ser.write(str2bytes('Device %s found'%newDeviceID))
+
 
 while True:
   incomeCommandBytes = ser.readline()

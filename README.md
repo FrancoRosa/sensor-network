@@ -64,7 +64,7 @@ response: [[10, 23.0], [11, 25.0]]
 ```
 
 ## Read change token
-When this value changes is because there is an update on any actuator, instead of making SQL queries frecuently.
+When this value changes is because there is an update on any actuator, instead of making SQL queries frequently.
 ```
 url: /api/actuators
 method: get
@@ -76,20 +76,31 @@ response: {'token': 10} # 10 is the current value of the token
 A gateway is a device that can interface other devices with this web app. For instance, devices that can not work directly with the API.
 
 ## LoRa Gateway
-To make LoRa devices interact with the app we are following the secuence stated bellow.
+To make LoRa devices interact with the app we are following the sequence stated bellow.
 ```mermaid
 sequenceDiagram
-    Device->>+Gateway: Hey Gateway, register me please.
+    Device->>+Gateway: 
+    loop Every minute
+        Device->>Gateway: Hey Gateway, register me please.
+        Device-->>Gateway: [[secretkey][id]]
+    end
     Gateway->>+Device: Yes, here are your parameters.
+    Gateway-->>+Device: [[secretkey][id][parameters]]
     Note right of Device: Parameters set periodic reading an listenig periods
-    Device->>+Gateway: Hey, save this data.
-    Device->>+Gateway: Hey, save this data.
-    Device->>+Gateway: ...
-    Gateway->>+Device: Hi Device, read this data!
+    Device->>+Gateway: Ack, [[secretkey][id][Ack]] .
+    Device-->>Gateway: [[secretkey][id][Ack]] .
+    loop According to parameters
+        Device->>Gateway: Send data based on *TX Period* inside *TX Slot*.
+        Device-->>Gateway:[[secretkey][id][data]]
+        Gateway->>Device: Send Ack or Data stored on buffer, *inside RX time*. 
+        Gateway-->>Device:[[secretkey][id][parameters]]
+        Device->>Gateway: Send Ack or Updates
+        Device-->>Gateway: [[secretkey][id][data]]
+    end
 ```
 ### Gateway tasks:
-* Read all transmisions (Loop)
-* If register frame is received, register device, send configuration paramaters
+* Read all transmissions (Loop)
+* If register frame is received, register device, send configuration parameters
 * If monitoring frame is received, update readings, send commands stored on outbox
 * Look for changes on actuator or config, if new changes, then put them on the outbox pile
-* Gateway should send logging data to webapp. For instance, when it started to work, etc.
+* Gateway should send logging data to web app. For instance, when it started to work, etc.
