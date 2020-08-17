@@ -38,13 +38,13 @@ url = 'http://localhost:3000/api/devices'
 #url = 'https://sensor-network-lora.herokuapp.com/api/actuators'
 # Read Actuators
 # data={'devices': {'id': [1, 2, 3]}} #many devicess
-# data={'devices': {'id': [ 15]}} #many devicess
+data={'devices': {'id': [15]}} #many devicess
 # data={'devices': {'id': [3]}} #only one
-# data={'devices': {'id': []}} #all sensors
+data={'devices': {'id': []}} #all sensors
 # data={} #all sensors
 
 # Update device data
-data={'devices': {'id': 14, 'data':{'latitude': -13.0, 'longitude': -13.0}}} #many devicess
+# data={'devices': {'id': 14, 'data':{'latitude': -13.0, 'longitude': -71.0}}} #many devicess
 
 
 # Show results

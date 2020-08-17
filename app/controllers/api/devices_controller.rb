@@ -16,8 +16,9 @@ class API::DevicesController < ApplicationController
       @device = Device.all
     else
       @device = Device.where(id: params[:devices][:id])
+      puts @device.inspect
     end
-    render json: @device.map { |dev| [dev.id, dev.tx_period, dev.tx_slot, dev.rx_time] }
+    render json: @device
   end
 
   def update_devices?(params)
@@ -27,8 +28,7 @@ class API::DevicesController < ApplicationController
   def update_devices(params)
     id = params[:devices][:id]
     if Device.exists?(id)
-      params[:devices][:data].keys.each do |key|
-        value = params[:devices][:data][key]
+      params[:devices][:data].each_pair do |key, value|
         pair = Hash[key, value]
         Device.find(id).update(pair)
       end
