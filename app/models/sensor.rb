@@ -10,7 +10,7 @@ class Sensor < ApplicationRecord
   validates :variable_id, presence: true
   validates :value, presence: true
   validates_uniqueness_of :device_id, scope: [:variable_id]
-  after_update :save_on_history, :update_actuators
+  after_update :save_on_history, :update_actuators, :send_messages 
 
   def features
     "#{Sensor.find(id).device.name}, #{Sensor.find(id).variable.name}"
@@ -33,5 +33,9 @@ class Sensor < ApplicationRecord
         # Imrpove this part
       end
     end
+  end
+
+  def send_messages
+    Sensor.find(id).subscribers.pluck(:fb_id).each { |fb_id| puts(fb_id) }
   end
 end
