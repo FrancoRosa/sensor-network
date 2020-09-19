@@ -81,8 +81,30 @@ class API::SensorsController < ApplicationController
   # // Handles messages events
   def handleMessage(sender_psid, received_message)
     puts '>>>>>>>>> message Handler'
-    if received_message[:text]
-      response = { text: "You send: #{received_message[:text]}. Now send an image" }
+    if received_message[:text] == 'Subscribe'
+      response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "Subscribe",
+            "subtitle": "Would you like to receibe automatic messages?",
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Yes!",
+                "payload": "yes",
+              },
+              {
+                "type": "postback",
+                "title": "No!",
+                "payload": "no",
+              }
+            ],
+          }]
+        }
+      }
     end
     callSendAPI(sender_psid, response)
   end
