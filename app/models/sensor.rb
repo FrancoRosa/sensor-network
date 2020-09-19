@@ -3,6 +3,8 @@ class Sensor < ApplicationRecord
   belongs_to :variable
   has_many :sensor_histories, dependent: :destroy
   has_many :sensor_actuators, dependent: :destroy
+  has_many :sensor_subscribers, dependent: :destroy
+  has_many :subscribers, through: :sensor_subscribers
   
   validates :device_id, presence: true
   validates :variable_id, presence: true
