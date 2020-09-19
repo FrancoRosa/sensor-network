@@ -20,13 +20,13 @@ import requests
 # print(">>> rx:", response.json())
 
 ############# Actuators Methods ##############
-#url = 'http://localhost:3000/api/actuators'
+url = 'http://localhost:3000/api/actuators'
 #url = 'https://sensor-network-lora.herokuapp.com/api/actuators'
 # Read Actuators
 # data={'actuator': {'id': [1, 2, 3]}} #many actuators
-# data={'actuator': {'id': [3]}} #only one
-# data={'actuator': {'id': []}} #all sensors
-# data={} #all sensors
+data={'actuator': {'id': [10]}} #only one
+# data={'actuator': {'id': []}} #read all actuators
+# data={} #t read token to see new changes
 
 # Update Actuators
 # data={'actuator': {'id': [3], 'expected_status': [0]}} #many actuators
@@ -34,13 +34,13 @@ import requests
 
 
 ############# Device Methods ##############
-url = 'http://localhost:3000/api/devices'
-#url = 'https://sensor-network-lora.herokuapp.com/api/actuators'
+# url = 'http://localhost:3000/api/devices'
+# url = 'https://sensor-network-lora.herokuapp.com/api/actuators'
 # Read Actuators
 # data={'devices': {'id': [1, 2, 3]}} #many devicess
-data={'devices': {'id': [15]}} #many devicess
+# data={'devices': {'id': [15]}} #many devicess
 # data={'devices': {'id': [3]}} #only one
-data={'devices': {'id': []}} #all sensors
+# data={'devices': {'id': []}} #all sensors
 # data={} #all sensors
 
 # Update device data
