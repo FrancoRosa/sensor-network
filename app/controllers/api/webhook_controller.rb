@@ -48,7 +48,7 @@ class API::WebhookController < ApplicationController
             template_type: 'generic',
             elements: [{
               title: 'Subscribe',
-              substitle: 'Would you like to receive automatic messages?',
+              subtitle: 'Would you like to receive automatic messages?',
               buttons: [
                 {
                   type: 'postback',
