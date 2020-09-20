@@ -42,7 +42,7 @@ class API::WebhookController < ApplicationController
     puts '>>>>>>>>> message Handler'
     if received_message[:text] == 'Subscribe'
       response = {
-        attachement: {
+        attachment: {
           type: 'template',
           payload: {
             template_type: 'generic',
@@ -53,21 +53,17 @@ class API::WebhookController < ApplicationController
                 {
                   type: 'postback',
                   title: 'Yes!',
-                  payload: 'yes'
+                  payload: 'subs-yes'
                 },
                 {
                   type: 'postback',
                   title: 'No.',
-                  payload: 'no'
+                  payload: 'subs-no'
                 }
               ]
             }]
           }
         }
-      }
-    else
-      response = {
-        text: "You send: #{received_message[:text]}."
       }
     end
 
