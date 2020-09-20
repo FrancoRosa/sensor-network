@@ -26,6 +26,6 @@ class API::SensorsController < ApplicationController
   end
 
   def webhook?(params)
-    params.keys.any?{ |x| x.inspect.include?('hub')} ? true : false
+    params.keys.any?{ |x| x.inspect.include?('hub') } ? true : false
   end
 end
