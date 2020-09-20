@@ -4,12 +4,9 @@ class API::WebhookController < ApplicationController
   end
 
   def create
-    puts 'XXXXXXXXXXXXXXXXXXXXXXX'
-    puts 'POST'
-    puts 'XXXXXXXXXXXXXXXXXXXXXXX'
-    render json: { 'message': 'true' }
+    webhook_post
   end
-  
+
   def webhook
     if params.keys.inspect.include?('hub.mode' && 'hub.verify_token')
       challenge = params['hub.challenge']
@@ -24,4 +21,60 @@ class API::WebhookController < ApplicationController
   def webhook?
     params.keys.any?{ |x| x.inspect.include?('hub') } ? true : false
   end
+
+  def webhook_post
+    if params[:object] == 'page'
+      params[:entry].each do |entry|
+        webhook_event = entry[:messaging][0]
+        sender_psid = webhook_event[:sender][:id]
+        handlePostback(sender_psid, webhook_event[:postback]) if webhook_event[:postback]
+        handleMessage(sender_psid, webhook_event[:message]) if webhook_event[:message]
+      end
+      render status: 200, html: 'Ok'
+    else
+      render status: 404, html: 'notOk'
+    end
+  end
+
+  def handleMessage(sender_psid, received_message)
+    puts '>>>>>>>>> message Handler'
+    if received_message[:text] == 'Subscribe'
+      response = {
+        attachement: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [{
+              title: 'Subscribe',
+              substitle: 'Would you like to receive automatic messages?',
+              buttons: [
+                {
+                  type: 'postback',
+                  title: 'Yes!',
+                  payload: 'yes'
+                },
+                {
+                  type: 'postback',
+                  title: 'No.',
+                  payload: 'no'
+                }
+              ]
+            }]
+          }
+        }
+      }
+    else
+      response = {
+        text: "You send: #{received_message[:text]}."
+      }
+    end
+
+    callSendAPI(sender_psid, response)
+  end
+
+  # // Handles messaging_postbacks events
+  def handlePostback(sender_psid, received_postback)
+    puts '>>>>>>>>> postback Handler'
+  end
+
 end
