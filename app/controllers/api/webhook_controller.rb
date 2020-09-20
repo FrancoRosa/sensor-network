@@ -1,4 +1,6 @@
 class API::WebhookController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     webhook if webhook?
   end
@@ -77,4 +79,10 @@ class API::WebhookController < ApplicationController
     puts '>>>>>>>>> postback Handler'
   end
 
+  def callSendAPI(sender_psid, response)
+    uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV['fb_key']}"
+    body = { recipient: {id: sender_psid}, message: response } 
+    x = Net::HTTP.post(URI.parse(uri), body.to_json, "Content-Type" => "application/json")
+    puts x.body
+  end
 end
