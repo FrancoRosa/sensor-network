@@ -70,11 +70,11 @@ class API::WebhookController < ApplicationController
         buttons: Device.all.pluck(:name, :id)
       }
       callSendMenu(options, sender_psid)
-    else received_postback[:payload].ends_with?('no')
-      puts 'code'
+      Subscriber.create(fb_id: sender_psid)
+    elsif received_postback[:payload].ends_with?('no')
       response = { text: 'You where unsubscribed' }
       callSendAPI(sender_psid, response)
-        # List all available devices
+      Subscriber.find_by(fb_id: sender_psid).destroy
     end
   end
 
@@ -94,8 +94,12 @@ class API::WebhookController < ApplicationController
     sensor_id = received_postback[:payload].sub('sen-', '').to_i
     @sensor = Sensor.find(sensor_id)
     @variable = @sensor.variable
+    response = { text: 'You will receive updates from the following sensor:' }
+    callSendAPI(sender_psid, response)
     response = { text: "#{@variable.name}: #{@sensor.value}#{@variable.unit}" }
     callSendAPI(sender_psid, response)
+    subscriber_id = Subscriber.find_by(fb_id: sender_psid).id
+    SensorSubscriber.create(sensor_id: sensor_id, subscriber_id: subscriber_id)
   end
 
   def callSendMenu(options, sender_psid)
@@ -131,9 +135,6 @@ class API::WebhookController < ApplicationController
       until buttons.empty?
         groups.push(buttons.shift(3))
       end
-      puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZ'
-      puts groups.inspect
-      puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZ'
       response = {
         attachment: {
           type: 'template',
@@ -150,7 +151,6 @@ class API::WebhookController < ApplicationController
       callSendAPI(sender_psid, response)
       
       groups.each do |group|
-        puts group.inspect
         response = {
           attachment: {
             type: 'template',
@@ -172,8 +172,5 @@ class API::WebhookController < ApplicationController
     uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV['fb_key']}"
     body = { recipient: {id: sender_psid}, message: response } 
     x = Net::HTTP.post(URI.parse(uri), body.to_json, "Content-Type" => "application/json")
-    puts x.body
   end
-
-
 end

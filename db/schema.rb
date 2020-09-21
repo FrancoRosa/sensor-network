@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_26_034301) do
+ActiveRecord::Schema.define(version: 2020_09_21_024621) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -111,6 +111,15 @@ ActiveRecord::Schema.define(version: 2020_07_26_034301) do
     t.index ["sensor_id"], name: "index_sensor_histories_on_sensor_id"
   end
 
+  create_table "sensor_subscribers", force: :cascade do |t|
+    t.integer "sensor_id", null: false
+    t.integer "subscriber_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["sensor_id"], name: "index_sensor_subscribers_on_sensor_id"
+    t.index ["subscriber_id"], name: "index_sensor_subscribers_on_subscriber_id"
+  end
+
   create_table "sensors", force: :cascade do |t|
     t.integer "device_id"
     t.integer "variable_id"
@@ -119,6 +128,12 @@ ActiveRecord::Schema.define(version: 2020_07_26_034301) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["device_id"], name: "index_sensors_on_device_id"
     t.index ["variable_id"], name: "index_sensors_on_variable_id"
+  end
+
+  create_table "subscribers", force: :cascade do |t|
+    t.string "fb_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "variables", force: :cascade do |t|
@@ -135,4 +150,6 @@ ActiveRecord::Schema.define(version: 2020_07_26_034301) do
   add_foreign_key "sensor_actuators", "commands"
   add_foreign_key "sensor_actuators", "sensors"
   add_foreign_key "sensor_histories", "sensors"
+  add_foreign_key "sensor_subscribers", "sensors"
+  add_foreign_key "sensor_subscribers", "subscribers"
 end
