@@ -32,47 +32,99 @@ class API::WebhookController < ApplicationController
         handlePostback(sender_psid, webhook_event[:postback]) if webhook_event[:postback]
         handleMessage(sender_psid, webhook_event[:message]) if webhook_event[:message]
       end
-      render status: 200, html: 'Ok'
+      render status: 200, html: 'EVENT_RECEIVED'
     else
-      render status: 404, html: 'notOk'
+      render status: 404, html: '404 Not Found'
     end
   end
 
   def handleMessage(sender_psid, received_message)
-    puts '>>>>>>>>> message Handler'
-    if received_message[:text] == 'Subscribe'
-      response = {
-        attachment: {
-          type: 'template',
-          payload: {
-            template_type: 'generic',
-            elements: [{
-              title: 'Subscribe',
-              subtitle: 'Would you like to receive automatic messages?',
-              buttons: [
-                {
-                  type: 'postback',
-                  title: 'Yes!',
-                  payload: 'subs-yes'
-                },
-                {
-                  type: 'postback',
-                  title: 'No.',
-                  payload: 'subs-no'
-                }
-              ]
-            }]
-          }
-        }
+    if received_message[:text]
+      options = {
+        title: 'Subscribe',
+        subtitle: 'Would you like to receive automatic messages?',
+        id: 'subs',
+        buttons: [['Yes', 'yes'], ['No', 'no']]
       }
     end
-
-    callSendAPI(sender_psid, response)
+    callSendMenu(options, sender_psid)
   end
 
   # // Handles messaging_postbacks events
   def handlePostback(sender_psid, received_postback)
-    puts '>>>>>>>>> postback Handler'
+    if received_postback[:payload].starts_with?('subs-')
+      subs_postback(sender_psid, received_postback)
+    elsif received_postback[:payload].starts_with?('dev-')
+      dev_postback(sender_psid, received_postback)
+    elsif received_postback[:payload].starts_with?('sen-')
+      sen_postback(sender_psid, received_postback)
+    end
+  end
+
+  def subs_postback(sender_psid, received_postback)
+    if received_postback[:payload].ends_with?('yes')
+      options = {
+        title: 'Devices',
+        subtitle: 'Select the device you want to receive news from',
+        id: 'dev',
+        buttons: Device.all.pluck(:name, :id)
+      }
+      callSendMenu(options, sender_psid)
+    else received_postback[:payload].ends_with?('no')
+      puts 'code'
+      response = { text: 'You where unsubscribed' }
+      callSendAPI(sender_psid, response)
+        # List all available devices
+    end
+  end
+
+  def dev_postback(sender_psid, received_postback)
+    device_id = received_postback[:payload].sub('dev-', '').to_i
+    @device = Device.find(device_id)
+    options = {
+      title: 'Sensors',
+      subtitle: 'Select the sensor you want to receive updates from',
+      id: 'sen',
+      buttons: @device.sensors.map { |s| [s.variable.name, s.id] }
+    }
+    callSendMenu(options, sender_psid)
+  end
+
+  def sen_postback(sender_psid, received_postback)
+    sensor_id = received_postback[:payload].sub('sen-', '').to_i
+    @sensor = Sensor.find(sensor_id)
+    @variable = @sensor.variable
+    response = { text: "#{@variable.name}: #{@sensor.value}#{@variable.unit}" }
+    callSendAPI(sender_psid, response)
+  end
+
+  def callSendMenu(options, sender_psid)
+    buttons = []
+
+    options[:buttons].each do |button|
+      buttons.push(
+        {
+          type: 'postback',
+          title: button[0],
+          payload: "#{options[:id]}-#{button[1]}"
+        }
+      )
+    end
+
+    response = {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'generic',
+          elements: [{
+            title: options[:title],
+            subtitle: options[:subtitle],
+            buttons: buttons
+          }]
+        }
+      }
+    }
+    callSendAPI(sender_psid, response)
   end
 
   def callSendAPI(sender_psid, response)
@@ -81,4 +133,6 @@ class API::WebhookController < ApplicationController
     x = Net::HTTP.post(URI.parse(uri), body.to_json, "Content-Type" => "application/json")
     puts x.body
   end
+
+
 end
