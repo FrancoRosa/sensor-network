@@ -39,14 +39,14 @@ class API::WebhookController < ApplicationController
   end
 
   def handleMessage(sender_psid, received_message)
-    if received_message[:text]
-      options = {
-        title: 'Subscribe',
-        subtitle: 'Would you like to receive automatic messages?',
-        id: 'subs',
-        buttons: [['Yes', 'yes'], ['No', 'no']]
-      }
-    end
+    options = {
+      title: 'Subscribe',
+      subtitle: 'Would you like to receive automatic messages?',
+      id: 'subs',
+      buttons: [
+        ['Yes', 'yes'],
+        ['No', 'no']]
+    }
     callSendMenu(options, sender_psid)
   end
 
@@ -100,7 +100,7 @@ class API::WebhookController < ApplicationController
 
   def callSendMenu(options, sender_psid)
     buttons = []
-    
+
     options[:buttons].each do |button|
       buttons.push(
         {
@@ -108,8 +108,8 @@ class API::WebhookController < ApplicationController
           title: button[0],
           payload: "#{options[:id]}-#{button[1]}"
         }
-        )
-      end
+      )
+    end
       
     if options[:buttons].size <= 3
       response = {
