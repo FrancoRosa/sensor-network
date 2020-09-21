@@ -22,6 +22,7 @@ class SensorActuatorsController < ApplicationController
 
   # GET /sensor_actuators/1/edit
   def edit
+    @devices = Device.all
   end
 
   # POST /sensor_actuators
