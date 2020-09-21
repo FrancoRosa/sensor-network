@@ -100,7 +100,7 @@ class API::WebhookController < ApplicationController
 
   def callSendMenu(options, sender_psid)
     buttons = []
-
+    
     options[:buttons].each do |button|
       buttons.push(
         {
@@ -108,23 +108,64 @@ class API::WebhookController < ApplicationController
           title: button[0],
           payload: "#{options[:id]}-#{button[1]}"
         }
-      )
-    end
-
-    response = {
-      attachment: {
-        type: 'template',
-        payload: {
-          template_type: 'generic',
-          elements: [{
-            title: options[:title],
-            subtitle: options[:subtitle],
-            buttons: buttons
-          }]
+        )
+      end
+      
+    if options[:buttons].size <= 3
+      response = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [{
+              title: options[:title],
+              subtitle: options[:subtitle],
+              buttons: buttons
+            }]
+          }
         }
       }
-    }
-    callSendAPI(sender_psid, response)
+      callSendAPI(sender_psid, response)
+    else
+      groups = []
+      until buttons.empty?
+        groups.push(buttons.shift(3))
+      end
+      puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZ'
+      puts groups.inspect
+      puts 'ZZZZZZZZZZZZZZZZZZZZZZZZZZ'
+      response = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [{
+              title: options[:title],
+              subtitle: options[:subtitle],
+              buttons: groups.shift
+            }]
+          }
+        }
+      }
+      callSendAPI(sender_psid, response)
+      
+      groups.each do |group|
+        puts group.inspect
+        response = {
+          attachment: {
+            type: 'template',
+            payload: {
+              template_type: 'generic',
+              elements: [{
+                title: '...',
+                buttons: group
+              }]
+            }
+          }
+        }
+        callSendAPI(sender_psid, response)
+      end
+    end
   end
 
   def callSendAPI(sender_psid, response)

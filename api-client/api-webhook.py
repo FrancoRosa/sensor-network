@@ -17,19 +17,17 @@ dataMessageRandom = {"object": "page", "entry": [{"id": "228020030589534", "time
 
 dataFromSubsYes = {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Yes!", "payload": "subs-yes"}}]}], "webhook": {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Yes!", "payload": "subs-yes"}}]}]}}
 
-
 dataFromSubsNo = {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "No", "payload": "subs-no"}}]}], "webhook": {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "No", "payload": "subs-yes"}}]}]}}
-
 
 dataFromDev = {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Yes!", "payload": "dev-14"}}]}], "webhook": {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Weather Station 1", "payload": "dev-1"}}]}]}}
 
 dataFromSen = {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Yes!", "payload": "sen-17"}}]}], "webhook": {"object": "page", "entry": [{"id": "228020030589534", "time": 1600638255195, "messaging": [{"sender": {"id": "3142169012485474"}, "recipient": {"id": "228020030589534"}, "timestamp": 1600638255066, "postback": {"title": "Weather Station 1", "payload": "dev-1"}}]}]}}
 
 
-transmit = dataMessageRandom
 transmit = dataFromSubsNo
-transmit = dataFromDev
+transmit = dataMessageRandom
 transmit = dataFromSubsYes
+transmit = dataFromDev
 transmit = dataFromSen
 response = requests.post(url, json = transmit)
 print(">>> tx:", transmit)
