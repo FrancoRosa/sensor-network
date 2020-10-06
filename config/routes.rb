@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :webhook, only: [:index, :create]
     resources :sensors, only: [:index]
     resources :actuators, only: [:index]
+    resources :devices, only: [:index]
   end
 
   resources :sensor_actuators
