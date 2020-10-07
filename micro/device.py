@@ -6,7 +6,7 @@ port = '/dev/ttyS21'
 key = 'secret'
 debug = True
 device = {
-  'id': 15,
+  'id': 14,
   'sync': 0, 
   'tx_connect': 15, 
   'tx_period': 30,

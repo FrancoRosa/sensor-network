@@ -62,12 +62,23 @@ def send_config(device_id, config):
   communicate(frame)
 
 def save_readings(message):
-  message = message.replace(commands[readings],'')
-  try:
-    device_id = int(message)
-    return device_id
-  except:
-    pass
+  message = message.strip()
+  message = message.replace(key,'')
+  message = message.replace(commands['readings'],'')
+  message = message.split(',')
+  device_id = int(message[0])
+  data={'devices': {'id': [device_id], 'sensors':[]}}
+  url = 'http://localhost:3000/api/devices'
+  response = requests.get(url, json=data)
+  sensors_id = response.json()
+  sensors_values = message[1:]
+  print('IDSs', sensors_id)
+  print('VALs', sensors_values)
+  data={'sensor': {'id': sensors_id, 'value': list(map(int,sensors_values))}}
+  url = 'http://localhost:3000/api/sensors'
+  response = requests.get(url, json=data)
+  print(">>> rx:", response.json())
+
 
 while True:
   message = listen()
