@@ -2,8 +2,8 @@ import requests
 
 from time import sleep, time
 import serial
-url = 'http://localhost:3000/api/devices'
-# url = 'https://sensor-network-lora.herokuapp.com/api/actuators'
+url = 'http://localhost:3000/api/'
+# url = 'https://sensor-network-lora.herokuapp.com/api/'
 
 port = '/dev/ttyS20'
 key = 'secret'
@@ -36,8 +36,9 @@ def get_id(message):
     pass
 
 def get_device_config(device_id):
+  route='devices'
   data={'devices': {'id': [device_id]}}
-  response = requests.get(url, json=data)
+  response = requests.get(url+route, json=data)
   return response.json()
 
 def communicate(tx_data):
@@ -67,16 +68,16 @@ def save_readings(message):
   message = message.replace(commands['readings'],'')
   message = message.split(',')
   device_id = int(message[0])
+  route = 'devices'
   data={'devices': {'id': [device_id], 'sensors':[]}}
-  url = 'http://localhost:3000/api/devices'
-  response = requests.get(url, json=data)
+  response = requests.get(url+route, json=data)
   sensors_id = response.json()
   sensors_values = message[1:]
-  print('IDSs', sensors_id)
-  print('VALs', sensors_values)
+  print('sensor_ids:', sensors_id)
+  print('sensor_values:', sensors_values)
+  route = 'sensors'
   data={'sensor': {'id': sensors_id, 'value': list(map(int,sensors_values))}}
-  url = 'http://localhost:3000/api/sensors'
-  response = requests.get(url, json=data)
+  response = requests.get(url+route, json=data)
   print(">>> rx:", response.json())
 
 

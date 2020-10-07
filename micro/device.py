@@ -5,6 +5,7 @@ port = '/dev/ttyS21'
 
 key = 'secret'
 debug = True
+
 device = {
   'id': 14,
   'sync': 0, 
@@ -66,12 +67,13 @@ def send_data():
 
     if device['sync']%device['tx_slot'] == 0:
       if not flag_sent:
-        print('SEND DATA --->')
         ser = serial.Serial(port, timeout=0)
-        frame = '%s%s%s,%s\n\r'%(key,
+        frame = '%s%s%s,%s\n\r'%(
+          key,
           device['id'],
           commands['readings'],
           ','.join(sensors))
+        print('-- >', frame)
         ser.write(frame.encode('utf-8'))      
         flag_sent = True
         flag_rx = True
