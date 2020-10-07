@@ -15,7 +15,6 @@ class API::DevicesController < ApplicationController
         @device = Device.all
       else
         @device = Device.where(id: params[:devices][:id])
-        puts @device.inspect
       end
     end
     render json: @device
