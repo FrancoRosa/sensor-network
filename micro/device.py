@@ -97,10 +97,6 @@ def send_data():
     sleep(1)
     device['sync'] = device['sync'] - 1
 
-      
-    
-
-
 while True:
   message = connect_gateway()
   if update_config(message):

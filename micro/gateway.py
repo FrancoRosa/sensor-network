@@ -14,9 +14,8 @@ commands = {
   'readings': 'readings',
 }
 
-
 # Listen to all connections all the time
-ser = serial.Serial(port)
+ser = serial.Serial(port, timeout=5)
 
 def listen():
   message = ser.readline()
@@ -24,6 +23,7 @@ def listen():
     message = str(message.decode('utf-8'))
     if debug: print('< -- ' + message) 
     return message
+  return ''
 
 def get_id(message):
   message = message.strip("b'")
@@ -80,14 +80,34 @@ def save_readings(message):
   response = requests.get(url+route, json=data)
   print(">>> rx:", response.json())
 
+# connected_devices = {} --S Thread to check timeouts(every 10seg)
+# connected_devices = {} --S Thread to db changes(20s)
+# thread to get actuator updates (every sec)
+# thread to manage serial stuff
+# thread to send I am alive data every min
+
+connected_devices = []
 
 while True:
   message = listen()
-  
   if commands['connect'] in message:
     device_id = get_id(message)
     config = get_device_config(device_id)
     send_config(device_id, config)
+    
+    if not device_id in connected_devices:
+      connected_devices.append(device_id)
   
   if commands['readings'] in message:
     save_readings(message)
+  
+  #look for changes on server
+
+# DB Gateway
+# name
+# 
+# last record (Conection, disconections, update)
+
+#Gateway-devices
+
+#Gateway api to asociate or not
