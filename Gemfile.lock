@@ -101,6 +101,7 @@ GEM
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
+    hirb (0.7.3)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
     inherited_resources (1.11.0)
@@ -259,6 +260,7 @@ DEPENDENCIES
   byebug
   capybara (>= 2.15)
   figaro
+  hirb
   jbuilder (~> 2.7)
   listen (~> 3.2)
   pg

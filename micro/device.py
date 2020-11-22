@@ -1,4 +1,5 @@
 from time import sleep
+from random import random as rand
 import serial
 
 port = '/dev/ttyS21'
@@ -21,7 +22,18 @@ commands = {
   'readings': 'readings',
 }
 
-sensors = ['1','2','3','4']
+
+def sensors_rand(len):
+  r = []
+  for i in range(len):
+    r.append("%2.2f"%(10*rand()))
+  return r
+
+def actuators_rand(len):
+  r = []
+  for i in range(len):
+    r.append("%2.2f"%(10*rand()))
+  return r
 
 def communicate_reg(tx_data):
   ser = serial.Serial(port, timeout=device['rx_time'])
@@ -72,7 +84,7 @@ def send_data():
           key,
           device['id'],
           commands['readings'],
-          ','.join(sensors))
+          ','.join(sensors_rand(6)))
         print('-- >', frame)
         ser.write(frame.encode('utf-8'))      
         flag_sent = True

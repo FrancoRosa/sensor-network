@@ -57,7 +57,7 @@ def send_config(device_id, config):
     config[0]['tx_period'],
     config[0]['tx_slot'],
     config[0]['rx_time'],
-    config[0]['tx_period'] - round(time())%config[0]['tx_period'],
+    round(time())%config[0]['tx_period'],
   )
   if debug: print('frame:', frame)
   communicate(frame)
@@ -68,15 +68,29 @@ def save_readings(message):
   message = message.replace(commands['readings'],'')
   message = message.split(',')
   device_id = int(message[0])
+
+  sensors_values = message[1:]
+  
   route = 'devices'
+  
   data={'devices': {'id': [device_id], 'sensors':[]}}
   response = requests.get(url+route, json=data)
   sensors_id = response.json()
-  sensors_values = message[1:]
+  
+  data={'devices': {'id': [device_id], 'actuators':[]}}
+  response = requests.get(url+route, json=data)
+  actuators_id = response.json()
+
   print('sensor_ids:', sensors_id)
   print('sensor_values:', sensors_values)
+  
   route = 'sensors'
-  data={'sensor': {'id': sensors_id, 'value': list(map(int,sensors_values))}}
+  data={'sensor': {'id': sensors_id, 'value': list(map(float,sensors_values[:len(sensors_id)]))}}
+  response = requests.get(url+route, json=data)
+  print(">>> rx:", response.json())
+  
+  route = 'actuators'
+  data={'actuator': {'id': actuators_id, 'current_status': list(map(float,sensors_values[:len(sensors_id)]))}}
   response = requests.get(url+route, json=data)
   print(">>> rx:", response.json())
 

@@ -2,15 +2,16 @@ class API::DevicesController < ApplicationController
   def index
     read_devices(params) if read_devices?(params)
     read_device_sensors(params) if read_device_sensors?(params)
+    read_device_actuators(params) if read_device_actuators?(params)
     update_devices(params) if update_devices?(params)
   end
 
   def read_devices?(params)
-    params[:devices][:data].nil? && params[:devices][:sensors].nil?
+    params[:devices][:data].nil? && params[:devices][:sensors].nil? && params[:devices][:actuators].nil?
   end
 
   def read_devices(params)
-    if params[:devices][:sensors].nil?
+    if params[:devices][:sensors].nil? && params[:devices][:actuators].nil?
       if params[:devices][:id].empty?
         @device = Device.all
       else
@@ -42,7 +43,22 @@ class API::DevicesController < ApplicationController
   end
 
   def read_device_sensors(params)
-    @sensors = Device.where(id: params[:devices][:id])[0].sensors.pluck(:id)
-    render json: @sensors
+    p '>>>>>>>>>>>>>>>>>>>>>>'
+    p 'read_device_sensors'
+    sensors = Device.where(id: params[:devices][:id])[0].sensors.pluck(:id)
+    render json: sensors
+  end
+
+  def read_device_actuators?(params)
+    p '>>>>>>>>>>>>>>>>>>>>>>'
+    p 'test logic'
+    params[:devices][:sensors].nil? && !params[:devices][:actuators].nil?
+  end
+
+  def read_device_actuators(params)
+    p '>>>>>>>>>>>>>>>>>>>>>>'
+    p 'read_device_actuators'
+    actuators = Device.where(id: params[:devices][:id])[0].actuators.pluck(:id)
+    render json: actuators
   end
 end
