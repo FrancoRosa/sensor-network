@@ -12,8 +12,9 @@ commands = {
   'connect': 'connect',
   'config': 'config',
   'readings': 'readings',
+  'ack': 'ack',
 }
-
+connected_devices = []
 # Listen to all connections all the time
 ser = serial.Serial(port, timeout=5)
 
@@ -46,10 +47,9 @@ def communicate(tx_data):
   ser.write(tx_data.encode('utf-8'))
 
 def send_config(device_id, config):
-
-  # sync sets the remaining seconds for the next transmission windown
+  # sync sets the remaining seconds for the next transmission window
   # time(): Seconds from the epoch
-  # sync = tx_period - round(time())%tx_period
+  # sync = round(time())%tx_period
   frame = '%s%s%s,%s,%s,%s,%d\n\r'%(
     key,
     str(device_id),
@@ -62,45 +62,68 @@ def send_config(device_id, config):
   if debug: print('frame:', frame)
   communicate(frame)
 
-def save_readings(message):
+def get_ids(device_id):
+  data={'devices': {'id': [device_id], 'sensors':[]}}
+  response = requests.get(url+'devices', json=data)
+  sensors_id = response.json()
+  
+  data={'devices': {'id': [device_id], 'actuators':[]}}
+  response = requests.get(url+'devices', json=data)
+  actuators_id = response.json()
+
+  data={'actuator': {'id': [actuators_id]}}
+  response = requests.get(url+'actuators', json=data)
+  actuators_status = response.json()
+  return sensors_id, actuators_id, actuators_status
+
+def get_data(message):
   message = message.strip()
   message = message.replace(key,'')
   message = message.replace(commands['readings'],'')
   message = message.split(',')
   device_id = int(message[0])
+  values = message[1:]
+  return device_id, values
 
-  sensors_values = message[1:]
-  
-  route = 'devices'
-  
-  data={'devices': {'id': [device_id], 'sensors':[]}}
-  response = requests.get(url+route, json=data)
-  sensors_id = response.json()
-  
-  data={'devices': {'id': [device_id], 'actuators':[]}}
-  response = requests.get(url+route, json=data)
-  actuators_id = response.json()
-
-  print('sensor_ids:', sensors_id)
-  print('sensor_values:', sensors_values)
-  
+def send_data(values, sensors_id, actuators_id):
   route = 'sensors'
-  data={'sensor': {'id': sensors_id, 'value': list(map(float,sensors_values[:len(sensors_id)]))}}
+  data={'sensor': {'id': sensors_id, 'value': list(map(float,values[:len(sensors_id)]))}}
   response = requests.get(url+route, json=data)
   print(">>> rx:", response.json())
   
   route = 'actuators'
-  data={'actuator': {'id': actuators_id, 'current_status': list(map(float,sensors_values[:len(sensors_id)]))}}
+  data={'actuator': {'id': actuators_id, 'current_status': list(map(float,values[:len(sensors_id)]))}}
   response = requests.get(url+route, json=data)
   print(">>> rx:", response.json())
+
+def send_ack(device_id, actuators_status):
+  frame = '%s%s%s,%s\n\r'%(
+    key,
+    str(device_id),
+    commands['ack'],
+    ','.join(list(map(lambda a: str(a[1]), actuators_status)))
+  )
+  if debug: print('frame:', frame)
+  communicate(frame)
+
+def save_readings(message):
+  device_id, values = get_data(message)
+  sensors_id, actuators_id, actuators_status = get_ids(device_id)
+  
+  print('device_id:', device_id)
+  print('values:', values)
+  print('sensors_id:', sensors_id)
+  print('actuators_id:', actuators_id)
+  print('actuators_status:', actuators_status)
+  
+  send_data(values, sensors_id, actuators_id)
+  send_ack(device_id, actuators_status)
 
 # connected_devices = {} --S Thread to check timeouts(every 10seg)
 # connected_devices = {} --S Thread to db changes(20s)
 # thread to get actuator updates (every sec)
 # thread to manage serial stuff
 # thread to send I am alive data every min
-
-connected_devices = []
 
 while True:
   message = listen()

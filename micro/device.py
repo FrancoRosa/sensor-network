@@ -20,8 +20,8 @@ commands = {
   'connect': 'connect',
   'config': 'config',
   'readings': 'readings',
+  'ack': 'ack'
 }
-
 
 def sensors_rand(len):
   r = []
@@ -71,13 +71,14 @@ def connect_gateway():
 def send_data():
   flag_sent = False
   flag_rx = False
+  flag_ack = False
   rx_count = 0
   while True:
-    if device['sync'] == 0:
-      device['sync'] = device['tx_period']
+    if device['sync'] == device['tx_period']:
+      device['sync'] = 0
       flag_sent = False
 
-    if device['sync']%device['tx_slot'] == 0:
+    if device['sync'] == device['tx_slot']:
       if not flag_sent:
         ser = serial.Serial(port, timeout=0)
         frame = '%s%s%s,%s\n\r'%(
@@ -93,10 +94,12 @@ def send_data():
         print('...listenig')
     
     if flag_rx:
-      message = ser.read()
+      message = ser.readline()
       message = message.decode('utf-8')
-      if len(message) > 0:
+      if len(message) > 1:
         print(str(message)) 
+        if commands['ack'] in message:
+          flag_ack = True
       rx_count = rx_count + 1
       
     
@@ -105,9 +108,12 @@ def send_data():
       rx_count = 0
       flag_rx=False
       ser.close()
-    
+      if not flag_ack:
+        break
+      flag_ack = False
+
     sleep(1)
-    device['sync'] = device['sync'] - 1
+    device['sync'] = device['sync'] + 1
 
 while True:
   message = connect_gateway()

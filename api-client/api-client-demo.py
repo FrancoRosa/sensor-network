@@ -30,8 +30,8 @@ url = 'http://localhost:3000/api/actuators'
 
 # Update Actuators
 data={'actuator': {'id': [10, 11], 'expected_status': [1, 0]}} # write the spected status of many actuators
-data={'actuator': {'id': [10, 11]}} # write the spected status of many actuators
 data={'actuator': {'id': [10, 11], 'current_status': [55, 56]}} # write actuator's current status
+data={'actuator': {'id': [10, 11]}} # write the spected status of many actuators
 # data={'actuator': {'id': [1,2,3], 'expected_status': [9.99, 10.11, 11.22 ]}} #many actuators
 
 
