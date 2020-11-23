@@ -1,7 +1,9 @@
 #include <SoftwareSerial.h>
-#define rxs 10 // arduino soft rx
-#define txs 11 // arduino soft tx#define led 13
-#define led 13 // arduino soft tx#define led 13
+#define rxs 10 // LoraRF rx
+#define txs 11 // LoraRF tx
+#define led 13 // arduino nano led
+#define m0 0 // LoraRF M0
+#define m1 1 // LoraRF M1
 
 const int device_id = 14;
  
@@ -11,14 +13,24 @@ const char cmd_readings[] = "readings";
 const char cmd_ack[] = "ack";
 const char key[] = "secret";
 
+// time related variables    // start
 const int tx_connect = 15;
-volatile int tx_period = 0;
-volatile int tx_slot = 0;
-volatile int rx_time = 0;
+volatile int tx_period = 300;
+volatile int tx_slot = 5;
+volatile int rx_time = 5;
 volatile int sync = 0;
+// time related              // end
 
+// output variables          // start
 volatile int actuator1 = 0;
 volatile int actuator2 = 0;
+// output variables    // end
+
+// sensor variables          // start
+volatile int sensor1 = 0;
+volatile int sensor2 = 0;
+volatile int sensor3 = 0;
+// sensor variables    // end
 
 volatile bool flag_configured = false;
 
@@ -34,6 +46,8 @@ SoftwareSerial SSerial(rxs,txs);
 
 void setup(){
 	pinMode(led, OUTPUT);
+	pinMode(m0, OUTPUT);
+	pinMode(m1, OUTPUT);
   	SSerial.begin(9600);
   	Serial.begin(115200);
 }
@@ -50,7 +64,7 @@ void connect_frame(int id){
 void data_frame(int id){
 	sprintf(out_buffer, "%s%d%s,%d,%d,%d",
 		key, id, cmd_readings,
-		5, 10, 15
+		sensor1, sensor2, sensor3
 	);
 }
 
@@ -66,40 +80,43 @@ int strtoi(const char *text, const int start, const int end){
 	return result;
 }
 
-int find_comma(const char *text, const int start){
+int find_chr(const char *text, const int start, const char chr){
 	char * pch;
-	pch = (char*) memchr (&text[start], ',', strlen(text));
+	pch = (char*) memchr (&text[start], chr, strlen(text));
 	if (pch != NULL) return min(pch - text, strlen(text)-1);
 }
 
-void find_edges(const char *text, int order){
+void find_edges(const char *text, int order, const char chr){
 	int start = 0;
 	int end = 0;
 	int i = 0;
-	while ((find_comma(text, start) != -1) && (i<=order)){
+	while ((find_chr(text, start, chr) != -1) && (i<=order)){
 		start = end;
-		end = find_comma(text, start+1);
+		end = find_chr(text, start+1, chr);
 		i++;
 	}
 	edges[0] = start == 0 ? start : start+1;
 	edges[1] = end - 1;
 }
 
+int split_chr(const char *text, const char chr, const int part){
+	find_edges(text,part,chr);
+	return strtoi(text,edges[0],edges[1]);
+}
+
 void proccess_config(){
 	//config,20,5,5,15
-	int start = 0;
-	int end = 0;
-	Serial.println("ProcessingCONFIG");
-	Serial.println(in_buffer);
-	find_edges(in_buffer,1); tx_period = strtoi(in_buffer,edges[0],edges[1]);
-	find_edges(in_buffer,2); tx_slot = strtoi(in_buffer,edges[0],edges[1]);
-	find_edges(in_buffer,3); rx_time = strtoi(in_buffer,edges[0],edges[1]);
-	find_edges(in_buffer,4); sync = strtoi(in_buffer,edges[0],edges[1]);
+	tx_period = split_chr(in_buffer, ',', 1);
+	tx_slot = split_chr(in_buffer, ',', 2);
+	rx_time = split_chr(in_buffer, ',', 3);
+	sync = split_chr(in_buffer, ',', 4);
 	flag_configured = true;
 }
 
 void proccess_ack(){
-	Serial.println("ProcessingACK");
+	actuator1 = split_chr(in_buffer, ',', 1);
+	actuator2 = split_chr(in_buffer, ',', 2);
+	flag_configured=true;
 }
 
 void proccess_commands(){
@@ -129,16 +146,44 @@ void read_commands(){
 	}
 }
 
+void tic() {
+	digitalWrite(led, HIGH);delay(50);
+	digitalWrite(led, LOW);	delay(950);
+	sync++;
+	if (sync >= tx_period) sync = 0;
+}
+
+void rf_awake() {
+	digitalWrite(m0, LOW);
+	digitalWrite(m1, LOW);
+}
+
+void rf_sleep() {
+	digitalWrite(m0, LOW);
+	digitalWrite(m1, HIGH);
+}
+
 void loop(){
-	//Serial.println("port0");
-	//SSerial.println("port1");
-	//SSerial.println(t);
-	//send_command(cmd_connect);
-	connect_frame(device_id);
-	send_command(out_buffer);
-	//data_frame(device_id);
-	//send_command(out_buffer);
+	tic();
+	if (sync != 0){
+		
+		if (!flag_configured && sync%tx_connect == 0) {
+			rf_awake();
+			connect_frame(device_id);
+			send_command(out_buffer);
+		}
+
+		if (flag_configured && sync == tx_slot) {
+			rf_awake();
+			data_frame(device_id);
+			send_command(out_buffer);
+			flag_configured = false;
+		}
+
+		if (flag_configured && sync == (tx_slot + rx_time)) {
+			rf_sleep();
+		}
+	}
 	read_commands();
-	digitalWrite(led, HIGH);delay(110);digitalWrite(led, LOW);	delay(3000);	
 }
 

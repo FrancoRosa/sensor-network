@@ -101,7 +101,7 @@ def send_ack(device_id, actuators_status):
     key,
     str(device_id),
     commands['ack'],
-    ','.join(list(map(lambda a: str(a[1]), actuators_status)))
+    ','.join(list(map(lambda a: str(round(a[1]*100)), actuators_status)))
   )
   if debug: print('frame:', frame)
   communicate(frame)
