@@ -43,21 +43,15 @@ class API::DevicesController < ApplicationController
   end
 
   def read_device_sensors(params)
-    p '>>>>>>>>>>>>>>>>>>>>>>'
-    p 'read_device_sensors'
     sensors = Device.where(id: params[:devices][:id])[0].sensors.pluck(:id)
     render json: sensors
   end
 
   def read_device_actuators?(params)
-    p '>>>>>>>>>>>>>>>>>>>>>>'
-    p 'test logic'
     params[:devices][:sensors].nil? && !params[:devices][:actuators].nil?
   end
 
   def read_device_actuators(params)
-    p '>>>>>>>>>>>>>>>>>>>>>>'
-    p 'read_device_actuators'
     actuators = Device.where(id: params[:devices][:id])[0].actuators.pluck(:id)
     render json: actuators
   end
