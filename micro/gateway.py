@@ -5,7 +5,7 @@ import serial
 url = 'http://localhost:3000/api/'
 # url = 'https://sensor-network-lora.herokuapp.com/api/'
 
-port = '/dev/ttyUSB1'
+port = '/dev/ttyUSB0'
 key = 'secret'
 debug = True
 commands = {
@@ -20,10 +20,13 @@ ser = serial.Serial(port, timeout=5)
 
 def listen():
   message = ser.readline()
-  if message: 
-    message = str(message.decode('utf-8'))
-    if debug: print('< -- ' + message) 
-    return message
+  try:
+    if message: 
+      message = str(message.decode('utf-8'))
+      if debug: print('< -- ' + message) 
+      return message
+  except:
+    pass
   return ''
 
 def get_id(message):
@@ -59,7 +62,7 @@ def send_config(device_id, config):
     config[0]['rx_time'],
     round(time())%config[0]['tx_period'],
   )
-  if debug: print('frame:', frame)
+  # if debug: print('frame:', frame)
   communicate(frame)
 
 def get_ids(device_id):
@@ -89,12 +92,12 @@ def send_data(values, sensors_id, actuators_id):
   route = 'sensors'
   data={'sensor': {'id': sensors_id, 'value': list(map(float,values[:len(sensors_id)]))}}
   response = requests.get(url+route, json=data)
-  print(">>> rx:", response.json())
+  # print(">>> rx:", response.json())
   
   route = 'actuators'
-  data={'actuator': {'id': actuators_id, 'current_status': list(map(float,values[:len(sensors_id)]))}}
+  data={'actuator': {'id': actuators_id, 'current_status': list(map(float,values[len(sensors_id):]))}}
   response = requests.get(url+route, json=data)
-  print(">>> rx:", response.json())
+  # print(">>> rx:", response.json())
 
 def send_ack(device_id, actuators_status):
   frame = '%s%s%s,%s\n\r'%(
@@ -103,18 +106,18 @@ def send_ack(device_id, actuators_status):
     commands['ack'],
     ','.join(list(map(lambda a: str(round(a[1]*100)), actuators_status)))
   )
-  if debug: print('frame:', frame)
+  # if debug: print('frame:', frame)
   communicate(frame)
 
 def save_readings(message):
   device_id, values = get_data(message)
   sensors_id, actuators_id, actuators_status = get_ids(device_id)
   
-  print('device_id:', device_id)
-  print('values:', values)
-  print('sensors_id:', sensors_id)
-  print('actuators_id:', actuators_id)
-  print('actuators_status:', actuators_status)
+  # print('device_id:', device_id)
+  # print('values:', values)
+  # print('sensors_id:', sensors_id)
+  # print('actuators_id:', actuators_id)
+  # print('actuators_status:', actuators_status)
   
   send_data(values, sensors_id, actuators_id)
   send_ack(device_id, actuators_status)
