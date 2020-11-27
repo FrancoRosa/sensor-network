@@ -6,8 +6,8 @@ import re
 url = 'http://localhost:3000/api/'
 # url = 'https://sensor-network-lora.herokuapp.com/api/'
 
-# port = '/dev/ttyUSB0'
-port = '/dev/ttyS20'
+port = '/dev/ttyUSB1'
+# port = '/dev/ttyS20'
 key = 'secret'
 debug = True
 commands = {

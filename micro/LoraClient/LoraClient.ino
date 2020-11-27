@@ -2,8 +2,8 @@
 #define rxs 10 // LoraRF rx
 #define txs 11 // LoraRF tx
 #define led 13 // arduino nano led
-#define m0 0 // LoraRF M0
-#define m1 1 // LoraRF M1
+#define m0 2 // LoraRF M0
+#define m1 3 // LoraRF M1
 
 const int device_id = 14;
  
@@ -114,8 +114,9 @@ void proccess_config(){
 }
 
 void proccess_ack(){
-	actuator1 = split_chr(in_buffer, ',', 1);
-	actuator2 = split_chr(in_buffer, ',', 2);
+	sync = split_chr(in_buffer, ',', 1);
+	actuator1 = split_chr(in_buffer, ',', 2);
+	actuator2 = split_chr(in_buffer, ',', 3);
 	flag_configured=true;
 }
 
@@ -147,8 +148,16 @@ void read_commands(){
 }
 
 void tic() {
-	digitalWrite(led, HIGH);delay(50);
-	digitalWrite(led, LOW);	delay(950);
+	if (flag_configured) {
+		digitalWrite(led, HIGH);delay(20);
+		digitalWrite(led, LOW);	delay(980);
+	} else {
+		digitalWrite(led, HIGH);delay(20);
+		digitalWrite(led, LOW);	delay(200);
+		digitalWrite(led, HIGH);delay(20);
+		digitalWrite(led, LOW);	delay(760);
+	}
+	
 	sync++;
 	if (sync >= tx_period) sync = 0;
 }
@@ -159,7 +168,7 @@ void rf_awake() {
 }
 
 void rf_sleep() {
-	digitalWrite(m0, LOW);
+	digitalWrite(m0, HIGH);
 	digitalWrite(m1, HIGH);
 }
 
