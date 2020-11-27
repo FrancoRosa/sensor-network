@@ -1,11 +1,13 @@
-import requests
-
 from time import sleep, time
+import requests
 import serial
+import re
+
 url = 'http://localhost:3000/api/'
 # url = 'https://sensor-network-lora.herokuapp.com/api/'
 
-port = '/dev/ttyUSB0'
+# port = '/dev/ttyUSB0'
+port = '/dev/ttyS20'
 key = 'secret'
 debug = True
 commands = {
@@ -14,7 +16,7 @@ commands = {
   'readings': 'readings',
   'ack': 'ack',
 }
-connected_devices = []
+connected_devices = {}
 # Listen to all connections all the time
 ser = serial.Serial(port, timeout=5)
 
@@ -30,11 +32,9 @@ def listen():
   return ''
 
 def get_id(message):
-  message = message.strip("b'")
-  message = message.replace(key, '')
-  message = message.replace(commands['connect'],'')
+  device_id = re.findall(r'\d+', message)[0]
   try:
-    device_id = int(message)
+    device_id = int(device_id)
     return device_id
   except:
     pass
@@ -73,11 +73,13 @@ def get_ids(device_id):
   data={'devices': {'id': [device_id], 'actuators':[]}}
   response = requests.get(url+'devices', json=data)
   actuators_id = response.json()
+  return sensors_id, actuators_id
 
+def get_actuators(actuators_id):
   data={'actuator': {'id': [actuators_id]}}
   response = requests.get(url+'actuators', json=data)
   actuators_status = response.json()
-  return sensors_id, actuators_id, actuators_status
+  return actuators_status
 
 def get_data(message):
   message = message.strip()
@@ -100,54 +102,46 @@ def send_data(values, sensors_id, actuators_id):
   # print(">>> rx:", response.json())
 
 def send_ack(device_id, actuators_status):
-  frame = '%s%s%s,%s\n\r'%(
+  sync = time()%connected_devices[device_id]['config']['tx_period']
+  frame = '%s%d%s,%d,%s\n\r'%(
     key,
-    str(device_id),
+    device_id,
     commands['ack'],
+    sync,
     ','.join(list(map(lambda a: str(round(a[1]*100)), actuators_status)))
   )
   # if debug: print('frame:', frame)
   communicate(frame)
 
+def connect_device(device_id):
+  config = get_device_config(device_id)
+  if len(config) != 0:
+    send_config(device_id, config)
+    if not device_id in connected_devices:
+      sensors_id, actuators_id = get_ids(device_id)
+      connected_devices[device_id] = {
+        'config': config[0],
+        'sensors': sensors_id,
+        'actuators': actuators_id
+      }
+
 def save_readings(message):
   device_id, values = get_data(message)
-  sensors_id, actuators_id, actuators_status = get_ids(device_id)
-  
-  # print('device_id:', device_id)
-  # print('values:', values)
-  # print('sensors_id:', sensors_id)
-  # print('actuators_id:', actuators_id)
-  # print('actuators_status:', actuators_status)
-  
-  send_data(values, sensors_id, actuators_id)
-  send_ack(device_id, actuators_status)
-
-# connected_devices = {} --S Thread to check timeouts(every 10seg)
-# connected_devices = {} --S Thread to db changes(20s)
-# thread to get actuator updates (every sec)
-# thread to manage serial stuff
-# thread to send I am alive data every min
+  if device_id in connected_devices:
+    sensors_id = connected_devices[device_id]['sensors']
+    actuators_id = connected_devices[device_id]['actuators']
+    actuators_status = get_actuators(actuators_id)
+    send_data(values, sensors_id, actuators_id)
+    send_ack(device_id, actuators_status)
+  else:
+    connect_device(device_id)
 
 while True:
   message = listen()
   if commands['connect'] in message:
     device_id = get_id(message)
-    config = get_device_config(device_id)
-    send_config(device_id, config)
-    
-    if not device_id in connected_devices:
-      connected_devices.append(device_id)
+    connect_device(device_id)
   
   if commands['readings'] in message:
     save_readings(message)
   
-  #look for changes on server
-
-# DB Gateway
-# name
-# 
-# last record (Conection, disconections, update)
-
-#Gateway-devices
-
-#Gateway api to asociate or not

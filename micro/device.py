@@ -8,7 +8,7 @@ key = 'secret'
 debug = True
 
 device = {
-  'id': 14,
+  'id': 19,
   'sync': 0, 
   'tx_connect': 15, 
   'tx_period': 30,
