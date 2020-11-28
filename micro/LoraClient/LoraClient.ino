@@ -185,6 +185,9 @@ void loop(){
 
 		if (flag_configured && sync == tx_slot) {
 			rf_awake();
+		}
+
+		if (flag_configured && sync == (tx_slot + 1)) {
 			data_frame(device_id);
 			send_command(out_buffer);
 			flag_configured = false;

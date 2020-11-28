@@ -134,6 +134,8 @@ def connect_device(device_id):
 
 def save_readings(message):
   device_id, values = get_data(message)
+  print("message >>>>>><")
+  print(message)
   if device_id in connected_devices:
     sensors_id = connected_devices[device_id]['sensors']
     actuators_id = connected_devices[device_id]['actuators']

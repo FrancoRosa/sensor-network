@@ -1,14 +1,26 @@
 from time import sleep, time
+from os import uname
 import requests
 import serial
 import re
+
+rpi = False
+
+if uname()[1] == 'raspberrypi':
+  rpi = True
+  ledpin = 13
+  import RPi.GPIO as GPIO
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
+  GPIO.setup(ledpin, GPIO.OUT)
 
 # url = 'http://localhost:3000/api/'
 url = 'https://sensor-network-lora.herokuapp.com/api/'
 
 port = '/dev/ttyUSB0'
-# port = '/dev/ttyS20'
-key = 'secret'
+if rpi: port = '/dev/ttyS0'
+
+key = 'lora'
 debug = True
 commands = {
   'connect': 'connect',
@@ -16,15 +28,17 @@ commands = {
   'readings': 'readings',
   'ack': 'ack',
 }
+
 connected_devices = {}
 # Listen to all connections all the time
-ser = serial.Serial(port, timeout=5)
+ser = serial.Serial(port, timeout=.98)
 
 def listen():
   message = ser.readline()
   try:
     if message: 
       message = str(message.decode('utf-8'))
+      if debug: print('< -- ' + message) 
       if key in message:
         return message
   except:
@@ -37,7 +51,7 @@ def get_id(message):
     device_id = int(device_id)
     return device_id
   except:
-    pass
+    return 0
 
 def get_device_config(device_id):
   route='devices'
@@ -136,7 +150,15 @@ def save_readings(message):
   else:
     connect_device(device_id)
 
+def blink():
+  if rpi:
+    GPIO.output(ledpin, GPIO.HIGH)
+    sleep(0.02)
+    GPIO.output(ledpin, GPIO.LOW)
+
+
 while True:
+  blink()
   message = listen()
   if commands['connect'] in message:
     device_id = get_id(message)
