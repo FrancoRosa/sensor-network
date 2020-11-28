@@ -111,6 +111,7 @@ void proccess_config(){
 	rx_time = split_chr(in_buffer, ',', 3);
 	sync = split_chr(in_buffer, ',', 4);
 	flag_configured = true;
+	rf_sleep();
 }
 
 void proccess_ack(){
