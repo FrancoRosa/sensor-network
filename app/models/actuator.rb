@@ -7,6 +7,8 @@ class Actuator < ApplicationRecord
   validates :device_id, presence: true
   validates :element_id, presence: true
   validates_uniqueness_of :device_id, scope: [:element_id]
+  validates :expected_status, presence: true
+  validates :current_status, presence: true 
   after_update :save_on_history
   
   def features
