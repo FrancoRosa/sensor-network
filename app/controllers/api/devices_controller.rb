@@ -13,7 +13,7 @@ class API::DevicesController < ApplicationController
   def read_devices(params)
     if params[:devices][:sensors].nil? && params[:devices][:actuators].nil?
       if params[:devices][:id].empty?
-        @device = Device.all
+        @device = Device.all.order(:id)
       else
         @device = Device.where(id: params[:devices][:id])
       end
@@ -43,7 +43,7 @@ class API::DevicesController < ApplicationController
   end
 
   def read_device_sensors(params)
-    sensors = Device.where(id: params[:devices][:id])[0].sensors.pluck(:id)
+    sensors = Device.where(id: params[:devices][:id])[0].sensors.pluck(:id).order(:id)
     render json: sensors
   end
 
@@ -52,7 +52,7 @@ class API::DevicesController < ApplicationController
   end
 
   def read_device_actuators(params)
-    actuators = Device.where(id: params[:devices][:id])[0].actuators.pluck(:id)
+    actuators = Device.where(id: params[:devices][:id])[0].actuators.pluck(:id).order(:id)
     render json: actuators
   end
 end

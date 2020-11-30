@@ -5,16 +5,16 @@ class DevicesController < ApplicationController
   # GET /devices
   # GET /devices.json
   def index
-    @devices = Device.all
+    @devices = Device.all.order(:id)
   end
 
   def map
-    @devices = Device.all
+    @devices = Device.all.order(:id)
   end
   # GET /devices/1
   # GET /devices/1.json
   def show
-    @devices = Device.all
+    @devices = Device.all.order(:id)
   end
 
   # GET /devices/new
@@ -25,7 +25,7 @@ class DevicesController < ApplicationController
 
   # GET /devices/1/edit
   def edit
-    @devices = Device.all
+    @devices = Device.all.order(:id)
   end
 
   # POST /devices

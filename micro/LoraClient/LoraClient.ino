@@ -50,6 +50,7 @@ void setup(){
 	pinMode(m1, OUTPUT);
   	SSerial.begin(9600);
   	Serial.begin(115200);
+	analogReference(INTERNAL);
 }
 
 void send_command(const char *message){
@@ -149,6 +150,7 @@ void read_commands(){
 }
 
 void tic() {
+	Serial.println(analogRead(A1));
 	if (flag_configured) {
 		digitalWrite(led, HIGH);delay(20);
 		digitalWrite(led, LOW);	delay(980);
@@ -161,6 +163,7 @@ void tic() {
 	
 	sync++;
 	if (sync >= tx_period) sync = 0;
+
 }
 
 void rf_awake() {

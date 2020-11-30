@@ -4,7 +4,7 @@ class API::SensorsController < ApplicationController
       webhook(params)
     elsif params[:sensor][:value].nil?
       if params[:sensor][:id].empty?
-        @sensor = Sensor.all
+        @sensor = Sensor.all.order(:id)
       else
         @sensor = Sensor.where(id: params[:sensor][:id])
       end

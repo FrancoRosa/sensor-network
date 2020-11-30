@@ -4,7 +4,7 @@ class ActuatorsController < ApplicationController
   # GET /actuators
   # GET /actuators.json
   def index
-    @actuators = Actuator.all
+    @actuators = Actuator.all.order(:id)
   end
 
   # GET /actuators/1

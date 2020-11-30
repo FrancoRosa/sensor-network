@@ -1,21 +1,26 @@
 from time import sleep, time
-import RPi.GPIO as GPIO
+from os import uname
 import requests
 import serial
 import re
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-ledpin=13
-GPIO.setup(ledpin, GPIO.OUT)
+rpi = False
+
+if uname()[1] == 'raspberrypi':
+  rpi = True
+  ledpin = 13
+  import RPi.GPIO as GPIO
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
+  GPIO.setup(ledpin, GPIO.OUT)
 
 # url = 'http://localhost:3000/api/'
 url = 'https://sensor-network-lora.herokuapp.com/api/'
 
-port = '/dev/ttyS0'
-# port = '/dev/ttyUSB1'
-# port = '/dev/ttyS20'
-key = 'secret'
+port = '/dev/ttyUSB0'
+if rpi: port = '/dev/ttyS0'
+
+key = 'lora'
 debug = True
 commands = {
   'connect': 'connect',
@@ -23,9 +28,10 @@ commands = {
   'readings': 'readings',
   'ack': 'ack',
 }
+
 connected_devices = {}
 # Listen to all connections all the time
-ser = serial.Serial(port, timeout=0.98)
+ser = serial.Serial(port, timeout=.98)
 
 def listen():
   message = ser.readline()
@@ -33,14 +39,15 @@ def listen():
     if message: 
       message = str(message.decode('utf-8'))
       if debug: print('< -- ' + message) 
-      return message
+      if key in message:
+        return message
   except:
     pass
   return ''
 
 def get_id(message):
+  device_id = re.findall(r'\d+', message)[0]
   try:
-    device_id = re.findall(r'\d+', message)[0]
     device_id = int(device_id)
     return device_id
   except:
@@ -95,6 +102,9 @@ def get_data(message):
   message = message.split(',')
   device_id = int(message[0])
   values = message[1:]
+  print('>>>>>>>>>>>>')
+  print(values)
+  print('>>>>>>>>>>>>')
   return device_id, values
 
 def send_data(values, sensors_id, actuators_id):
@@ -134,8 +144,6 @@ def connect_device(device_id):
 
 def save_readings(message):
   device_id, values = get_data(message)
-  print("message >>>>>><")
-  print(message)
   if device_id in connected_devices:
     sensors_id = connected_devices[device_id]['sensors']
     actuators_id = connected_devices[device_id]['actuators']
@@ -146,9 +154,11 @@ def save_readings(message):
     connect_device(device_id)
 
 def blink():
-  GPIO.output(ledpin, GPIO.HIGH)
-  sleep(0.02)
-  GPIO.output(ledpin, GPIO.LOW)
+  if rpi:
+    GPIO.output(ledpin, GPIO.HIGH)
+    sleep(0.02)
+    GPIO.output(ledpin, GPIO.LOW)
+
 
 while True:
   blink()
