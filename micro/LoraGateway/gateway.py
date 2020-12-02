@@ -14,18 +14,18 @@ if uname()[1] == 'raspberrypi':
   GPIO.setwarnings(False)
   GPIO.setup(ledpin, GPIO.OUT)
 
-# url = 'http://localhost:3000/api/'
-url = 'https://sensor-network-lora.herokuapp.com/api/'
+url = 'http://localhost:3000/api/'
+# url = 'https://sensor-network-lora.herokuapp.com/api/'
 
 port = '/dev/ttyUSB0'
 if rpi: port = '/dev/ttyS0'
 
-key = 'lora'
+key = 'lra'
 debug = True
 commands = {
-  'connect': 'connect',
-  'config': 'config',
-  'readings': 'readings',
+  'connect': 'cnn',
+  'config': 'cfn',
+  'readings': 'rds',
   'ack': 'ack',
 }
 
@@ -87,6 +87,8 @@ def get_ids(device_id):
   data={'devices': {'id': [device_id], 'actuators':[]}}
   response = requests.get(url+'devices', json=data)
   actuators_id = response.json()
+  print("Get IDES","ID:",device_id)
+  print("sensors:",sensors_id,"actuators:",actuators_id)
   return sensors_id, actuators_id
 
 def get_actuators(actuators_id):
@@ -102,9 +104,6 @@ def get_data(message):
   message = message.split(',')
   device_id = int(message[0])
   values = message[1:]
-  print('>>>>>>>>>>>>')
-  print(values)
-  print('>>>>>>>>>>>>')
   return device_id, values
 
 def send_data(values, sensors_id, actuators_id):
@@ -148,6 +147,10 @@ def save_readings(message):
     sensors_id = connected_devices[device_id]['sensors']
     actuators_id = connected_devices[device_id]['actuators']
     actuators_status = get_actuators(actuators_id)
+    print('>>>< Axtuator ID')
+    print(actuators_id)
+    print('>>>< Axtuator Status')
+    print(actuators_status)
     send_data(values, sensors_id, actuators_id)
     send_ack(device_id, actuators_status)
   else:

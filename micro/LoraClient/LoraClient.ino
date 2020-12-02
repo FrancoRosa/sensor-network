@@ -5,13 +5,13 @@
 #define m0 2 // LoraRF M0
 #define m1 3 // LoraRF M1
 
-const int device_id = 14;
+const int device_id = 18;
  
-const char cmd_connect[] = "connect";
-const char cmd_config[] = "config";
-const char cmd_readings[] = "readings";
+const char cmd_connect[] = "cnn";
+const char cmd_config[] = "cfn";
+const char cmd_readings[] = "rds";
 const char cmd_ack[] = "ack";
-const char key[] = "secret";
+const char key[] = "lra";
 
 // time related variables    // start
 const int tx_connect = 15;
@@ -50,7 +50,6 @@ void setup(){
 	pinMode(m1, OUTPUT);
   	SSerial.begin(9600);
   	Serial.begin(115200);
-	analogReference(INTERNAL);
 }
 
 void send_command(const char *message){
@@ -150,7 +149,6 @@ void read_commands(){
 }
 
 void tic() {
-	Serial.println(analogRead(A1));
 	if (flag_configured) {
 		digitalWrite(led, HIGH);delay(20);
 		digitalWrite(led, LOW);	delay(980);
@@ -161,6 +159,11 @@ void tic() {
 		digitalWrite(led, LOW);	delay(760);
 	}
 	
+	Serial.println(">>>>>> Actuadores >>>>>>");
+	Serial.println(actuator1);
+	Serial.println(actuator2);
+	Serial.println(">>>>>>>>>>>>");
+
 	sync++;
 	if (sync >= tx_period) sync = 0;
 

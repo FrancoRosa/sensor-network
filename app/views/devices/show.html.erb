@@ -20,7 +20,7 @@
           <div class="column menu">
             <h3 class="has-text-info menu-label">Sensors</h3>
             <ul class="menu-list">
-              <% @device.sensors.each do |sensor| %>
+              <% @device.sensors.order(:id).each do |sensor| %>
                 <li> <%= link_to  sensor.variable.name, sensor_path(sensor) %> </li>
               <% end %>
               <%= link_to 'NewSensor', new_sensor_path(device_id: @device), class: "has-text-info" %>
@@ -29,7 +29,7 @@
           <div class="column menu">
           <h3 class="has-text-info menu-label">Actuators</h3>
             <ul class="menu-list">
-              <% @device.actuators.each do |actuator| %>
+              <% @device.actuators.order(:id).each do |actuator| %>
                 <li> <%= link_to  actuator.element.name, actuator_path(actuator) %> </li>
               <% end %>
               <%= link_to 'New Actuator', new_actuator_path(device_id: @device), class: "has-text-info" %>

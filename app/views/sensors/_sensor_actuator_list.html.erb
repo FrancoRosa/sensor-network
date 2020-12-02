@@ -3,7 +3,7 @@
   <div class="box has-background-grey-light menu">
     <p class="menu-label">Select a sensor:</p>
     <ul class="menu-list">
-      <% @device.sensors.each do |sensor| %>
+      <% @device.sensors.order(:id).each do |sensor| %>
         <li><%= link_to  sensor.variable.name, sensor_path(sensor) %></li>
       <% end %>
     <ul>
@@ -12,7 +12,7 @@
   <div class="box has-background-grey-light menu">
     <p class="menu-label">Select an actuator:</p>
     <ul class="menu-list">
-      <% @device.actuators.each do |actuator| %>
+      <% @device.actuators.order(:id).each do |actuator| %>
         <li><%= link_to  actuator.element.name, actuator_path(actuator) %></li>
       <% end %>
     <ul>
