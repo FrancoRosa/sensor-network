@@ -39,7 +39,7 @@ class Sensor < ApplicationRecord
     @sensor = Sensor.find(id)
     @device = @sensor.device
     @variable = @sensor.variable
-    response = { text: "#{@device.name}:\n#{@variable.name}: #{@sensor.value}#{@variable.unit}\n#{@sensor.updated_at.strftime("%T %F")}" }
+    response = { text: "#{@device.name}:\n#{@variable.name}: #{@sensor.value}#{@variable.unit}\n#{@sensor.updated_at.localtime.strftime("%T %F")}" }
     Sensor.find(id).subscribers.each do |subscriber|
       callSendAPI(subscriber[:fb_id], response)
     end

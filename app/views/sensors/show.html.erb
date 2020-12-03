@@ -34,7 +34,7 @@
           <tbody class="table-data">
             <% @history.each do |history| %>
             <tr class="table-data">
-              <td class="has-text-right subtitle is-7"><%= history.created_at.to_formatted_s(:short)%></td>
+              <td class="has-text-right subtitle is-7"><%= history.created_at.localtime.to_formatted_s(:short)%></td>
               <td class="has-text-right subtitle is-7"><%= '%.2f' % history.value %></td>
             </tr>            
             <% end %>
