@@ -1,5 +1,5 @@
 <% values = @history.pluck(:value)%>
-<% labels = @history.map{ |x| x.created_at.to_formatted_s(:short) } %>
+<% labels = @history.map{ |x| x.created_at.localtime.to_formatted_s(:short) } %>
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     var myData =  <%= values %>;
