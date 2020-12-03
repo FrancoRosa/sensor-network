@@ -93,10 +93,9 @@ class API::WebhookController < ApplicationController
   def sen_postback(sender_psid, received_postback)
     sensor_id = received_postback[:payload].sub('sen-', '').to_i
     @sensor = Sensor.find(sensor_id)
+    @device = @sensor.device
     @variable = @sensor.variable
-    response = { text: 'You will receive updates from the following sensor:' }
-    callSendAPI(sender_psid, response)
-    response = { text: "#{@variable.name}: #{@sensor.value}#{@variable.unit}" }
+    response = { text: "You will receive updates from:\n#{@device.name}/#{@variable.name}" }
     callSendAPI(sender_psid, response)
     subscriber_id = Subscriber.find_by(fb_id: sender_psid).id
     SensorSubscriber.create(sensor_id: sensor_id, subscriber_id: subscriber_id)
