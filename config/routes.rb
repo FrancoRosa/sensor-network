@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   
   namespace :api, defaults: { format: :json } do
     resources :webhook, only: [:index, :create]
-    resources :sensors, only: [:index]
+    resources :sensors, only: [:index, :create]
     resources :actuators, only: [:index]
     resources :devices, only: [:index]
   end

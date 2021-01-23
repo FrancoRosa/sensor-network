@@ -1,4 +1,6 @@
 class API::SensorsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  
   def index
     if webhook?(params)
       webhook(params)
@@ -18,6 +20,15 @@ class API::SensorsController < ApplicationController
       respond_to do |format|
         format.json { render json: { 'message': 'true' } }
       end
+    end
+  end
+
+  def create
+    params[:sensor][:id].each_with_index do |id, index|
+      Sensor.find(id).update(value: params[:sensor][:value][index])
+    end
+    respond_to do |format|
+      format.json { render json: { 'message': 'true' } }
     end
   end
 
