@@ -1,0 +1,5 @@
+{
+    "output": "output",
+    "port": "COM5",
+    "configuration": "device_variant=STM32F103C8,upload_method=STLinkMethod,cpu_speed=speed_48mhz,opt=osstd"
+}

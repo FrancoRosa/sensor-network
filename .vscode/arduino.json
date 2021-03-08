@@ -1,0 +1,6 @@
+{
+    "board": "arduino:avr:nano",
+    "configuration": "cpu=atmega328old",
+    "sketch": "micro\\LoraClient\\LoraClientActuator\\LoraClientActuator.ino",
+    "port": "COM5"
+}
